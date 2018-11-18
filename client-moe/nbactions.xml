@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    MPD UI - UI for Music Protocol Daemon
+    Copyright © jaroslav.tulach@apidesign.org
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 2 of the License.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program. If not, see <http://www.gnu.org/licenses/>.
+
+-->
+<actions>
+    <action>
+        <actionName>run</actionName>
+        <goals>
+            <goal>package</goal>
+            <goal>pre-site</goal>
+            <goal>moe:launch</goal>
+        </goals>
+        <properties>
+            <skipTests>true</skipTests>
+        </properties>
+        <activatedProfiles>
+            <activatedProfile>moe</activatedProfile>
+        </activatedProfiles>
+    </action>
+    <action>
+        <actionName>debug</actionName>
+        <goals>
+            <goal>package</goal>
+            <goal>pre-site</goal>
+            <goal>moe:launch</goal>
+        </goals>
+        <properties>
+            <skipTests>true</skipTests>
+            <moe.options>debug:${jpda.attach.port}</moe.options>
+            <jpda.attach>true</jpda.attach>
+            <jpda.attach.trigger>JDWP will wait for debugger on port</jpda.attach.trigger>
+        </properties>
+        <activatedProfiles>
+            <activatedProfile>moe</activatedProfile>
+        </activatedProfiles>
+    </action>
+    <action>
+        <actionName>CUSTOM-LaunchXcode</actionName>
+        <displayName>Launch Xcode</displayName>
+        <goals>
+            <goal>help:system</goal>
+            <goal>exec:exec</goal>
+        </goals>
+        <properties>
+            <exec.executable>open</exec.executable>
+            <exec.args>xcode/ios.xcodeproj</exec.args>
+        </properties>
+        <activatedProfiles>
+            <activatedProfile>moe</activatedProfile>
+        </activatedProfiles>
+    </action>
+    <action>
+        <actionName>CUSTOM-ListSimulators</actionName>
+        <displayName>List Simulators</displayName>
+        <goals>
+            <goal>moe:listSimulators</goal>
+        </goals>
+        <activatedProfiles>
+            <activatedProfile>moe</activatedProfile>
+        </activatedProfiles>
+    </action>
+</actions>

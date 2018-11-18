@@ -1,0 +1,29 @@
+buildscript {
+    repositories {
+        jcenter()
+        mavenLocal()
+    }
+    dependencies {
+        // Multi-OS Engine plugin
+        classpath group: 'org.multi-os-engine', name: 'moe-gradle', version: '1.4.+'
+    }
+}
+
+// Apply plugins
+apply plugin: 'moe'
+
+sourceCompatibility = "1.7"
+targetCompatibility = "1.7"
+
+// Set maven repository
+
+// Exclude all files from Gradle's test runner
+test { exclude '**' }
+
+// Setup Multi-OS Engine
+moe {
+    xcode.project = 'xcode/ios.xcodeproj'
+    xcode.mainTarget = 'ios'
+    xcode.testTarget = 'ios-Test'
+}
+

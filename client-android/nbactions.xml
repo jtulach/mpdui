@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    MPD UI - UI for Music Protocol Daemon
+    Copyright © jaroslav.tulach@apidesign.org
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 2 of the License.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program. If not, see <http://www.gnu.org/licenses/>.
+
+-->
+<actions>
+    <action>
+        <actionName>run</actionName>
+        <goals>
+            <goal>clean</goal>
+            <goal>package</goal>
+            <goal>android:deploy</goal>
+            <goal>android:run</goal>
+        </goals>
+        <properties>
+            <skipTests>true</skipTests>
+        </properties>
+    </action>
+    <action>
+        <actionName>debug</actionName>
+        <goals>
+            <goal>clean</goal>
+            <goal>package</goal>
+            <goal>android:deploy</goal>
+            <goal>android:run</goal>
+        </goals>
+        <properties>
+            <skipTests>true</skipTests>
+            <android.run.debug>${jpda.attach.port}</android.run.debug>
+            <jpda.attach>true</jpda.attach>
+        </properties>
+    </action>
+    <action>
+        <actionName>CUSTOM-android-run</actionName>
+        <displayName>Run in Android</displayName>
+        <goals>
+            <goal>clean</goal>
+            <goal>package</goal>
+            <goal>android:deploy</goal>
+            <goal>android:run</goal>
+        </goals>
+        <properties>
+            <skipTests>true</skipTests>
+        </properties>
+    </action>
+</actions>
