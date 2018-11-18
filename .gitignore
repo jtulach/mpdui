@@ -1,1 +1,4 @@
-/client/target/
+target
+.gradle
+build
+

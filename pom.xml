@@ -11,7 +11,9 @@
   <name>mpdui</name>
     <modules>
         <module>client</module>
+        <!--
         <module>client-web</module>
+                -->
         <module>client-android</module>
         <module>client-ios</module>
         <module>client-moe</module>
@@ -88,7 +90,7 @@
                             <fail>${enforcer.fail}</fail>
                         </configuration>
                     </execution>
-                </executions>              
+                </executions>
             </plugin>
             <plugin>
                 <inherited>false</inherited>
