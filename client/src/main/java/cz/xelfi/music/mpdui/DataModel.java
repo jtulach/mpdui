@@ -27,12 +27,14 @@ import org.bff.javampd.server.MPD;
 /** Model annotation generates class Data with
  * one message property, boolean property and read only words property
  */
-@Model(className = "Data", targetId = "", instance = true, properties = {
+@Model(className = "Data", targetId = "", instance = true, builder = "put", properties = {
     @Property(name = "message", type = String.class),
+    @Property(name = "host", type = String.class),
     @Property(name = "rotating", type = boolean.class)
 })
 final class DataModel {
     private PlatformServices services;
+    private MPD mpd;
 
     @ComputedProperty static java.util.List<String> words(String message) {
         String[] arr = new String[6];
@@ -43,22 +45,22 @@ final class DataModel {
         return java.util.Arrays.asList(arr);
     }
 
-    @Function static void turnAnimationOn(Data model) {
-        MPD mpd = new MPD.Builder()
-        .server("bigmac")
-        .build();
-        
-        mpd.getPlayer().play();
+    @Function void turnAnimationOn(Data model) {
+        mpd(model).getPlayer().play();
+    }
+
+    private MPD mpd(Data model) {
+        if (mpd == null) {
+            mpd = new MPD.Builder()
+                .server(model.getHost())
+                .build();
+        }
+        return mpd;
     }
 
     @Function
     void turnAnimationOff(final Data model) {
-        services.confirmByUser("Really turn off?", new Runnable() {
-            @Override
-            public void run() {
-                model.setRotating(false);
-            }
-        });
+        mpd(model).getPlayer().pause();
     }
 
     @Function static void rotate5s(final Data model) {
@@ -98,7 +100,9 @@ final class DataModel {
      * Called when the page is ready.
      */
     static void onPageLoad(PlatformServices services) {
-        Data ui = new Data();
+        Data ui = new Data()
+            .putHost("bigmac");
+
         ui.setMessage("Hello World from HTML and Java!");
         ui.initServices(services);
         ui.applyBindings();
