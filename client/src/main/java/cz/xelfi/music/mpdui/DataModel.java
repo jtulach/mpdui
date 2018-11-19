@@ -16,25 +16,25 @@
  */
 package cz.xelfi.music.mpdui;
 
-import net.java.html.json.ComputedProperty;
 import net.java.html.json.Function;
 import net.java.html.json.Model;
 import net.java.html.json.Property;
 import net.java.html.json.ModelOperation;
 import net.java.html.json.OnPropertyChange;
 import cz.xelfi.music.mpdui.js.PlatformServices;
+import java.util.List;
+import net.java.html.json.Models;
 import org.bff.javampd.player.PlayerChangeEvent;
 import org.bff.javampd.player.PlayerChangeListener;
 import org.bff.javampd.server.MPD;
 import org.bff.javampd.song.MPDSong;
-/** Model annotation generates class Data with
- * one message property, boolean property and read only words property
- */
+import org.bff.javampd.song.SongDatabase;
+
 @Model(className = "Data", targetId = "", instance = true, builder = "put", properties = {
     @Property(name = "message", type = String.class),
     @Property(name = "host", type = String.class),
     @Property(name = "currentSong", type = Song.class),
-    @Property(name = "rotating", type = boolean.class)
+    @Property(name = "words", type = Song.class, array = true),
 })
 final class DataModel {
     private Listener listener;
@@ -47,13 +47,18 @@ final class DataModel {
         model.getCurrentSong().read(s);
     }
 
-    @ComputedProperty static java.util.List<String> words(String message) {
-        String[] arr = new String[6];
-        String[] words = message == null ? new String[0] : message.split(" ", 6);
-        for (int i = 0; i < 6; i++) {
-            arr[i] = words.length > i ? words[i] : "!";
+    @OnPropertyChange("message")
+    void search(Data model) {
+        final SongDatabase db = mpd(model).getMusicDatabase().getSongDatabase();
+
+        List<Song> arr = Models.asList();
+        for (MPDSong s : db.searchAny(model.getMessage())) {
+            Song n = new Song();
+            n.read(s);
+            arr.add(n);
         }
-        return java.util.Arrays.asList(arr);
+        model.getWords().clear();
+        model.getWords().addAll(arr);
     }
 
     @Function void turnAnimationOn(Data model) {
@@ -76,14 +81,6 @@ final class DataModel {
     }
 
     @Function static void rotate5s(final Data model) {
-        model.setRotating(true);
-        java.util.Timer timer = new java.util.Timer("Rotates a while");
-        timer.schedule(new java.util.TimerTask() {
-            @Override
-            public void run() {
-                model.setRotating(false);
-            }
-        }, 5000);
     }
 
     @Function

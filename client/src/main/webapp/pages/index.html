@@ -29,7 +29,7 @@
         <br>
         <button data-bind="click: $root.turnAnimationOn">Play</button>
         <button data-bind="click: $root.turnAnimationOff">||</button>
-        <button data-bind="enable: !rotating(), click: $root.rotate5s">Rotate Few Seconds</button>
+        <button data-bind="click: $root.rotate5s">Rotate Few Seconds</button>
         <button data-bind="click: $root.showScreenSize">Screen Size!</button>
 
         <div data-bind="with: currentSong">
@@ -38,10 +38,13 @@
             <div data-bind="text: artistName"></div>
         </div>
 
-        <div id="scene">
-            <span id="words" data-bind="foreach: words">
-                <span data-bind="text: $data, css: { 'rotate' : $root.rotating } "></span>
-            </span>
+        <div>
+            <ul data-bind="foreach: words">
+                <li>
+                    <span data-bind="text: artistName"></span>:
+                    <span data-bind="text: name"></span>
+                </li>
+            </ul>
         </div>
 
         <h1>Settings</h1>
