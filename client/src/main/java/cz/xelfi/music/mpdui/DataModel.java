@@ -47,22 +47,28 @@ final class DataModel {
         model.getCurrentSong().read(s);
     }
 
+    @Function
+    void play(Data model, Song data) {
+        mpd(model).getPlaylist().addSong(data.getFile());
+        model.updateStatus();
+    }
+
     @OnPropertyChange("message")
     void search(Data model) {
+        final String msg = model.getMessage();
+        if (msg == null || msg.length() < 3) {
+            return;
+        }
         final SongDatabase db = mpd(model).getMusicDatabase().getSongDatabase();
 
         List<Song> arr = Models.asList();
-        for (MPDSong s : db.searchAny(model.getMessage())) {
+        for (MPDSong s : db.searchAny(msg)) {
             Song n = new Song();
             n.read(s);
             arr.add(n);
         }
         model.getWords().clear();
         model.getWords().addAll(arr);
-    }
-
-    @Function void turnAnimationOn(Data model) {
-        mpd(model).getPlayer().play();
     }
 
     private MPD mpd(Data model) {
@@ -75,18 +81,24 @@ final class DataModel {
         return mpd;
     }
 
+
+    @Function void play(Data model) {
+        mpd(model).getPlayer().play();
+    }
+
     @Function
-    void turnAnimationOff(final Data model) {
+    void pause(final Data model) {
         mpd(model).getPlayer().pause();
     }
 
-    @Function static void rotate5s(final Data model) {
+    @Function
+    void playNext(final Data model) {
+        mpd(model).getPlayer().playNext();
     }
 
     @Function
-    void showScreenSize(Data model) {
-        int[] widthHeight = services.getScreenSize();
-        model.setMessage("Screen size is " + widthHeight[0] + " x " + widthHeight[1]);
+    void refresh(Data model) {
+        model.updateStatus();
     }
 
     @OnPropertyChange("message")
@@ -113,7 +125,6 @@ final class DataModel {
         Data ui = new Data()
             .putHost("bigmac");
 
-        ui.setMessage("Hello World from HTML and Java!");
         ui.initServices(services);
         ui.applyBindings();
         ui.updateStatus();

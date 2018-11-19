@@ -27,10 +27,10 @@
         <h1>Words Demo</h1>
         <input data-bind="textInput:  message">
         <br>
-        <button data-bind="click: $root.turnAnimationOn">Play</button>
-        <button data-bind="click: $root.turnAnimationOff">||</button>
-        <button data-bind="click: $root.rotate5s">Rotate Few Seconds</button>
-        <button data-bind="click: $root.showScreenSize">Screen Size!</button>
+        <button data-bind="click: $root.play">Play</button>
+        <button data-bind="click: $root.pause">||</button>
+        <button data-bind="click: $root.playNext">&gt;&gt;</button>
+        <button data-bind="click: $root.refresh">?</button>
 
         <div data-bind="with: currentSong">
             <div data-bind="text: name"></div>
@@ -43,6 +43,7 @@
                 <li>
                     <span data-bind="text: artistName"></span>:
                     <span data-bind="text: name"></span>
+                    <a href="#" data-bind="click: $root.play">&gt;&gt;</a>
                 </li>
             </ul>
         </div>
