@@ -14,7 +14,6 @@
         <!--
         <module>client-web</module>
                 -->
-        <module>client-android</module>
         <module>client-ios</module>
         <module>client-moe</module>
         <module>js</module>
@@ -114,9 +113,25 @@
                     <excludes>
                         <exclude>*</exclude>
                         <exclude>.*/**</exclude>
+                        <exclude>**/.gradle/**</exclude>
+                        <exclude>**/build/**</exclude>
+                        <exclude>**/target/**</exclude>
                     </excludes>
                 </configuration>
             </plugin>
         </plugins>
     </build>
+    <profiles>
+        <profile>
+            <id>android</id>
+            <activation>
+                <property>
+                    <name>android.sdk.path</name>
+                </property>
+            </activation>
+            <modules>
+                <module>client-android</module>
+            </modules>
+        </profile>
+    </profiles>
 </project>
