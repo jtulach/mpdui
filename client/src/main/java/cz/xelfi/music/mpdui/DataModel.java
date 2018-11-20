@@ -22,7 +22,9 @@ import net.java.html.json.Property;
 import net.java.html.json.ModelOperation;
 import net.java.html.json.OnPropertyChange;
 import cz.xelfi.music.mpdui.js.PlatformServices;
+import java.util.Collection;
 import java.util.List;
+import net.java.html.json.ComputedProperty;
 import net.java.html.json.Models;
 import org.bff.javampd.player.PlayerChangeEvent;
 import org.bff.javampd.player.PlayerChangeListener;
@@ -34,7 +36,8 @@ import org.bff.javampd.song.SongDatabase;
     @Property(name = "message", type = String.class),
     @Property(name = "host", type = String.class),
     @Property(name = "currentSong", type = Song.class),
-    @Property(name = "words", type = Song.class, array = true),
+    @Property(name = "foundSongs", type = Song.class, array = true),
+    @Property(name = "playlist", type = Song.class, array = true),
 })
 final class DataModel {
     private Listener listener;
@@ -43,8 +46,16 @@ final class DataModel {
 
     @ModelOperation
     void updateStatus(Data model) {
-        MPDSong s = mpd(model).getPlayer().getCurrentSong();
-        model.getCurrentSong().read(s);
+        final MPD server = mpd(model);
+        {
+            MPDSong s = server.getPlayer().getCurrentSong();
+            model.getCurrentSong().read(s);
+        }
+        {
+            List<Song> playing = convertSongs(server.getPlaylist().getSongList());
+            model.getPlaylist().clear();
+            model.getPlaylist().addAll(playing);
+        }
     }
 
     @Function
@@ -53,22 +64,38 @@ final class DataModel {
         model.updateStatus();
     }
 
+    @ComputedProperty
+    static boolean searching(String message) {
+        return message != null && message.length() >= 3;
+    }
+
+    @ComputedProperty
+    static boolean playing(String message) {
+        return !searching(message);
+    }
+
     @OnPropertyChange("message")
     void search(Data model) {
         final String msg = model.getMessage();
-        if (msg == null || msg.length() < 3) {
+        if (!searching(msg)) {
             return;
         }
         final SongDatabase db = mpd(model).getMusicDatabase().getSongDatabase();
+        final Collection<MPDSong> result = db.searchAny(msg);
 
+        List<Song> arr = convertSongs(result);
+        model.getFoundSongs().clear();
+        model.getFoundSongs().addAll(arr);
+    }
+
+    private static List<Song> convertSongs(final Collection<MPDSong> result) {
         List<Song> arr = Models.asList();
-        for (MPDSong s : db.searchAny(msg)) {
+        for (MPDSong s : result) {
             Song n = new Song();
             n.read(s);
             arr.add(n);
         }
-        model.getWords().clear();
-        model.getWords().addAll(arr);
+        return arr;
     }
 
     private MPD mpd(Data model) {
