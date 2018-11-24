@@ -192,6 +192,23 @@ final class DataModel {
         @Property(name = "position", type = int.class),
     })
     static final class SongCntrl {
+        @ComputedProperty
+        static String fullName(String artistName, String name, String title, String file) {
+            if (name != null && !name.isEmpty()) {
+                if (artistName != null && !artistName.isEmpty()) {
+                    return artistName + ":" + name;
+                }
+                return name;
+            }
+            if (title != null && !title.isEmpty()) {
+                if (artistName != null && !artistName.isEmpty()) {
+                    return artistName + ":" + title;
+                }
+                return title;
+            }
+            return file;
+        }
+
         @ModelOperation
         static void read(Song model, MPDSong s) {
             model
