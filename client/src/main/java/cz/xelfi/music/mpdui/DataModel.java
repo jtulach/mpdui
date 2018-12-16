@@ -24,6 +24,8 @@ import net.java.html.json.OnPropertyChange;
 import cz.xelfi.music.mpdui.js.PlatformServices;
 import java.util.Collection;
 import java.util.List;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 import net.java.html.json.ComputedProperty;
 import net.java.html.json.Models;
 import org.bff.javampd.player.PlayerChangeEvent;
@@ -43,6 +45,7 @@ final class DataModel {
     private Listener listener;
     private PlatformServices services;
     private MPD mpd;
+    private Executor exec;
 
     @ModelOperation
     void updateStatus(Data model) {
@@ -80,10 +83,17 @@ final class DataModel {
         if (!searching(msg)) {
             return;
         }
-        final SongDatabase db = mpd(model).getMusicDatabase().getSongDatabase();
-        final Collection<MPDSong> result = db.searchAny(msg);
+        final MPD d = mpd(model);
+        exec.execute(() -> {
+            final SongDatabase db = d.getMusicDatabase().getSongDatabase();
+            final Collection<MPDSong> result = db.searchAny(msg);
+            model.applySongs(result);
+        });
+    }
 
-        List<Song> arr = convertSongs(result);
+    @ModelOperation
+    void applySongs(Data model, Collection<MPDSong> songs) {
+        List<Song> arr = convertSongs(songs);
         model.getFoundSongs().clear();
         model.getFoundSongs().addAll(arr);
     }
@@ -104,6 +114,7 @@ final class DataModel {
                 .server(model.getHost())
                 .build();
             mpd.getPlayer().addPlayerChangeListener(listener);
+            exec = Executors.newSingleThreadExecutor();
         }
         return mpd;
     }
@@ -211,6 +222,9 @@ final class DataModel {
 
         @ModelOperation
         static void read(Song model, MPDSong s) {
+            if (s == null) {
+                return;
+            }
             model
                 .putName(s.getName())
                 .putTitle(s.getTitle())
