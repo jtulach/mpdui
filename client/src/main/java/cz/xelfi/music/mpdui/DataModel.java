@@ -67,6 +67,14 @@ final class DataModel {
         model.updateStatus();
     }
 
+    @Function
+    void removeSong(Data model, Song data) {
+        data.withSong(s -> {
+            mpd(model).getPlaylist().removeSong(s);
+        });
+        model.updateStatus();
+    }
+
     @ComputedProperty
     static boolean searching(String message) {
         return message != null && message.length() >= 3;
@@ -187,7 +195,7 @@ final class DataModel {
 
     }
 
-    @Model(builder = "put", className = "Song", properties = {
+    @Model(builder = "put", instance = true, className = "Song", properties = {
         @Property(name = "name", type = String.class),
         @Property(name = "title", type = String.class),
         @Property(name = "genre", type = String.class),
@@ -203,6 +211,8 @@ final class DataModel {
         @Property(name = "position", type = int.class),
     })
     static final class SongCntrl {
+        private MPDSong song;
+
         @ComputedProperty
         static String fullName(String artistName, String name, String title, String file) {
             if (name != null && !name.isEmpty()) {
@@ -221,7 +231,8 @@ final class DataModel {
         }
 
         @ModelOperation
-        static void read(Song model, MPDSong s) {
+        void read(Song model, MPDSong s) {
+            this.song = s;
             if (s == null) {
                 return;
             }
@@ -240,5 +251,16 @@ final class DataModel {
                 .putId(s.getId())
                 .putPosition(s.getPosition());
         }
+
+        @ModelOperation
+        void withSong(Song model, WithMPDSong with) {
+            if (song != null) {
+                with.accept(song);
+            }
+        }
+    }
+
+    interface WithMPDSong {
+        void accept(MPDSong s);
     }
 }

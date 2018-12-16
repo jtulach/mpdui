@@ -56,9 +56,7 @@
             <ul data-bind="foreach: playlist">
                 <li>
                     <span data-bind="text: fullName"></span>
-                    <!--
-                    <a href="#" data-bind="click: $root.play">&gt;&gt;</a>
-                    -->
+                    <a href="#" data-bind="click: $root.removeSong">[ - ]</a>
                 </li>
             </ul>
         </div>
