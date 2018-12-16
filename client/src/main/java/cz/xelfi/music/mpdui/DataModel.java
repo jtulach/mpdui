@@ -59,7 +59,7 @@ final class DataModel {
     }
 
     @Function
-    void play(Data model, Song data) {
+    void addSong(Data model, Song data) {
         mpd(model).getPlaylist().addSong(data.getFile());
         model.updateStatus();
     }
