@@ -24,6 +24,9 @@
             <goal>process-classes</goal>
             <goal>exec:exec</goal>
         </goals>
+        <activatedProfiles>
+            <activatedProfile>desktop</activatedProfile>
+        </activatedProfiles>        
     </action>
     <action>
         <actionName>debug</actionName>
@@ -35,6 +38,9 @@
             <jpda.listen>true</jpda.listen>
             <exec.debug.arg>-Xrunjdwp:transport=dt_socket,server=n,address=${jpda.address}</exec.debug.arg>
         </properties>
+        <activatedProfiles>
+            <activatedProfile>desktop</activatedProfile>
+        </activatedProfiles>        
     </action>
         <action>
             <actionName>CUSTOM-Build Desktop App</actionName>
