@@ -30,6 +30,7 @@ import net.java.html.json.ComputedProperty;
 import net.java.html.json.Models;
 import org.bff.javampd.player.PlayerChangeEvent;
 import org.bff.javampd.player.PlayerChangeListener;
+import org.bff.javampd.playlist.PlaylistDatabase;
 import org.bff.javampd.server.MPD;
 import org.bff.javampd.song.MPDSong;
 import org.bff.javampd.song.SongDatabase;
@@ -95,6 +96,13 @@ final class DataModel {
         exec.execute(() -> {
             final SongDatabase db = d.getMusicDatabase().getSongDatabase();
             final Collection<MPDSong> result = db.searchAny(msg);
+            PlaylistDatabase pdb = d.getMusicDatabase().getPlaylistDatabase();
+            for (String list : pdb.listPlaylists()) {
+                if (list.contains(msg)) {
+                    Collection<MPDSong> playList = pdb.listPlaylistSongs(list);
+                    result.addAll(playList);
+                }
+            }
             model.applySongs(result);
         });
     }
