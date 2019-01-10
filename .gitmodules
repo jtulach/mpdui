@@ -1,0 +1,3 @@
+[submodule "javampd"]
+	path = javampd
+	url = https://github.com/jtulach/javampd.git

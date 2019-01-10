@@ -10,6 +10,7 @@
 
   <name>mpdui</name>
     <modules>
+        <module>javampd</module>
         <module>client</module>
         <!--
         <module>client-web</module>
@@ -111,6 +112,7 @@
                     <strictCheck>true</strictCheck>
                     <header>COPYING</header>
                     <excludes>
+                        <exclude>javampd/**</exclude>
                         <exclude>*</exclude>
                         <exclude>.*/**</exclude>
                         <exclude>**/.gradle/**</exclude>
