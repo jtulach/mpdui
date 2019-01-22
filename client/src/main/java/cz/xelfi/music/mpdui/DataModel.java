@@ -98,7 +98,7 @@ final class DataModel {
             final Collection<MPDSong> result = db.searchAny(msg);
             PlaylistDatabase pdb = d.getMusicDatabase().getPlaylistDatabase();
             for (String list : pdb.listPlaylists()) {
-                if (list.contains(msg)) {
+                if (list.contains(msg) || list.toLowerCase().contains(msg.toLowerCase())) {
                     Collection<MPDSong> playList = pdb.listPlaylistSongs(list);
                     result.addAll(playList);
                 }
