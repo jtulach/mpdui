@@ -118,6 +118,7 @@
                         <exclude>**/.gradle/**</exclude>
                         <exclude>**/build/**</exclude>
                         <exclude>**/target/**</exclude>
+                        <exclude>**/webapp/pages/materialize.*</exclude>
                     </excludes>
                 </configuration>
             </plugin>

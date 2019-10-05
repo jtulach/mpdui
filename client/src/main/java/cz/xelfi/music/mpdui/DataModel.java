@@ -37,12 +37,20 @@ import org.bff.javampd.song.SongDatabase;
 
 @Model(className = "Data", targetId = "", instance = true, builder = "put", properties = {
     @Property(name = "message", type = String.class),
+    @Property(name = "tab", type = DataModel.Tab.class),
     @Property(name = "host", type = String.class),
     @Property(name = "currentSong", type = Song.class),
     @Property(name = "foundSongs", type = Song.class, array = true),
     @Property(name = "playlist", type = Song.class, array = true),
 })
 final class DataModel {
+    enum Tab {
+        MAIN,
+        SEARCHLINE,
+        SETTINGS,
+        PLAYLIST,
+    }
+
     private Listener listener;
     private PlatformServices services;
     private MPD mpd;
@@ -77,19 +85,54 @@ final class DataModel {
     }
 
     @ComputedProperty
-    static boolean searching(String message) {
-        return message != null && message.length() >= 3;
+    static boolean searching(Tab tab) {
+        return tab == Tab.SEARCHLINE;
     }
 
     @ComputedProperty
-    static boolean playing(String message) {
-        return !searching(message);
+    static boolean playing(Tab tab) {
+        return tab == Tab.PLAYLIST;
+    }
+
+    @ComputedProperty
+    static boolean searchline(Tab tab) {
+        return tab == Tab.SEARCHLINE;
+    }
+
+    @ComputedProperty
+    static boolean controlling(Tab tab) {
+        return tab == null || tab == Tab.MAIN;
+    }
+
+    @ComputedProperty
+    static boolean settingup(Tab tab) {
+        return tab == Tab.SETTINGS;
+    }
+
+    @Function
+    static void doSettings(Data model) {
+        model.setTab(Tab.SETTINGS);
+    }
+
+    @Function 
+    static void doSearch(Data model) {
+        model.setTab(Tab.SEARCHLINE);
+    }
+
+    @Function
+    static void doMain(Data model) {
+        model.setTab(Tab.MAIN);
+    }
+
+    @Function
+    static void doList(Data model) {
+        model.setTab(Tab.PLAYLIST);
     }
 
     @OnPropertyChange("message")
     void search(Data model) {
         final String msg = model.getMessage();
-        if (!searching(msg)) {
+        if (!searching(model.getTab())) {
             return;
         }
         final MPD d = mpd(model);
