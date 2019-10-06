@@ -275,24 +275,6 @@
                           </archive>
                       </configuration>
                   </plugin>
-                  <plugin>
-                      <artifactId>maven-assembly-plugin</artifactId>
-                      <version>2.4</version>
-                      <executions>
-                          <execution>
-                              <id>distro-assembly</id>
-                              <phase>package</phase>
-                              <goals>
-                                  <goal>single</goal>
-                              </goals>
-                              <configuration>
-                                  <descriptors>
-                                      <descriptor>src/main/assembly/javafx.xml</descriptor>
-                                  </descriptors>
-                              </configuration>
-                          </execution>
-                      </executions>
-                  </plugin>
               </plugins>
           </build>
       </profile>
@@ -306,6 +288,43 @@
                   <scope>runtime</scope>
               </dependency>
           </dependencies>
+          <build>
+              <plugins>
+                  <plugin>
+                      <groupId>org.apache.maven.plugins</groupId>
+                      <artifactId>maven-jar-plugin</artifactId>
+                      <version>2.4</version>
+                      <configuration>
+                          <archive>
+                              <manifest>
+                                  <mainClass>${project.mainclass}</mainClass>
+                                  <addClasspath>true</addClasspath>
+                                  <classpathPrefix>lib/</classpathPrefix>
+                                  <useUniqueVersions>false</useUniqueVersions>
+                              </manifest>
+                          </archive>
+                      </configuration>
+                  </plugin>
+                  <plugin>
+                      <artifactId>maven-assembly-plugin</artifactId>
+                      <version>2.4</version>
+                      <executions>
+                          <execution>
+                              <id>distro-assembly</id>
+                              <phase>package</phase>
+                              <goals>
+                                  <goal>single</goal>
+                              </goals>
+                              <configuration>
+                                  <descriptors>
+                                      <descriptor>src/main/assembly/desktop.xml</descriptor>
+                                  </descriptors>
+                              </configuration>
+                          </execution>
+                      </executions>
+                  </plugin>
+              </plugins>
+          </build>
       </profile>
       <profile>
           <id>browser-presenter</id>
