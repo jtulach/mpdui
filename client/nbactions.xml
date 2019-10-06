@@ -50,7 +50,7 @@
                 <goal>package</goal>
             </goals>
             <activatedProfiles>
-                <activatedProfile>desktop</activatedProfile>
+                <activatedProfile>webkit-presenter</activatedProfile>
             </activatedProfiles>
         </action>
         <action>
