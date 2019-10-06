@@ -24,6 +24,8 @@ import net.java.html.json.OnPropertyChange;
 import cz.xelfi.music.mpdui.js.PlatformServices;
 import java.util.Collection;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import net.java.html.json.ComputedProperty;
@@ -42,6 +44,9 @@ import org.bff.javampd.song.SongDatabase;
     @Property(name = "message", type = String.class),
     @Property(name = "tab", type = DataModel.Tab.class),
     @Property(name = "volume", type = int.class),
+    @Property(name = "elapsed", type = int.class),
+    @Property(name = "total", type = int.class),
+    @Property(name = "playing", type = boolean.class),
     @Property(name = "host", type = String.class),
     @Property(name = "currentSong", type = Song.class),
     @Property(name = "foundSongs", type = Song.class, array = true),
@@ -59,6 +64,7 @@ final class DataModel {
     private PlatformServices services;
     private MPD mpd;
     private Executor exec;
+    private Timer updates;
 
     @ModelOperation
     void updateStatus(Data model) {
@@ -67,6 +73,9 @@ final class DataModel {
             final Player player = server.getPlayer();
             MPDSong s = player.getCurrentSong();
             model.setVolume(player.getVolume());
+            model.setElapsed((int) player.getElapsedTime());
+            model.setTotal((int) player.getTotalTime());
+            model.setPlaying(player.getStatus() == Player.Status.STATUS_PLAYING);
             model.getCurrentSong().read(s);
         }
         {
@@ -75,7 +84,19 @@ final class DataModel {
             model.getPlaylist().addAll(playing);
         }
     }
-
+    
+    @ModelOperation
+    void updateUI(Data model) {
+        if (model.isPlaying()) {
+            int e = model.getElapsed();
+            if (e < model.getTotal()) {
+                model.setElapsed(e + 1);
+            } else {
+                model.updateStatus();
+            }
+        }
+    }
+    
     @Function
     void addSong(Data model, Song data) {
         model.getFoundSongs().remove(data);
@@ -97,7 +118,7 @@ final class DataModel {
     }
 
     @ComputedProperty
-    static boolean playing(Tab tab) {
+    static boolean listing(Tab tab) {
         return tab == Tab.PLAYLIST;
     }
 
@@ -114,6 +135,15 @@ final class DataModel {
     @ComputedProperty
     static boolean settingup(Tab tab) {
         return tab == Tab.SETTINGS;
+    }
+    
+    @ComputedProperty
+    static String elapsedMinSec(int elapsed) {
+        int min = elapsed / 60;
+        int sec = elapsed % 60;
+        String secStr = "00" + sec;
+        secStr = secStr.substring(secStr.length() - 2);
+        return min + ":" + secStr;
     }
 
     @Function
@@ -179,7 +209,7 @@ final class DataModel {
             return;
         }
         final MPD d = mpd(model);
-        exec.execute(() -> {
+        Runnable r = () -> {
             final SongDatabase db = d.getMusicDatabase().getSongDatabase();
             final Collection<MPDSong> result = db.searchAny(msg);
             PlaylistDatabase pdb = d.getMusicDatabase().getPlaylistDatabase();
@@ -190,7 +220,8 @@ final class DataModel {
                 }
             }
             model.applySongs(result);
-        });
+        };
+        exec.execute(r);
     }
 
     @ModelOperation
@@ -220,6 +251,9 @@ final class DataModel {
                 .build();
             mpd.getPlayer().addPlayerChangeListener(listener);
             exec = Executors.newSingleThreadExecutor();
+            updates = new Timer("Background MPD UI Tasks");
+            TimerTask task = new RunnableTask(model::updateUI);
+            updates.scheduleAtFixedRate(task, 0, 1000);
         }
         return mpd;
     }
@@ -360,5 +394,18 @@ final class DataModel {
 
     interface WithMPDSong {
         void accept(MPDSong s);
+    }
+
+    private final static class RunnableTask extends TimerTask {
+        private final Runnable run;
+
+        RunnableTask(Runnable r) {
+            this.run = r;
+        }
+
+        @Override
+        public void run() {
+            run.run();
+        }
     }
 }

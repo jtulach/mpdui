@@ -57,15 +57,19 @@
                         <label for="name">Name</label>
                     </div>
                     <div class="input-field col s12">
+                        <label for="at" data-bind="text: $root.elapsedMinSec">0:00</label>
+                    </div>
+                    <div class="input-field col s12">
+                        <input disabled data-bind="value: $root.elapsed, attr: { max : $root.total }" type="range" id="at" min="0" max="100"/>
+                    </div>
+                    <div class="input-field col s12">
                         <input disabled data-bind="textInput: albumName" placeholder="Placeholder" id="album" type="text" class="validate">
                         <label for="album">Album</label>
                     </div>
                 </form>
-                <form action="#">
-                </form>
                 <div class="fixed-action-btn">
                   <p class="range-field">
-                      <input data-bind="value: $root.volume" type="range" id="test5" min="0" max="100"/>
+                      <input data-bind="value: $root.volume" type="range" id="volume" min="0" max="100"/>
                   </p>
                   <a data-bind="click: $root.volumeDown" class="btn-floating btn-large gray">
                     <i class="large material-icons">volume_down</i>
@@ -101,7 +105,7 @@
                 </li>
             </ul>
         </div>
-        <div data-bind="visible: playing">
+        <div data-bind="visible: listing">
             <ul class="collection" data-bind="foreach: playlist">
                 <li class="collection-item avatar">
                     <a href="#!" data-bind="click: $root.removeSong">
@@ -120,7 +124,7 @@
 
         <div class="row" data-bind="visible: settingup">
           <div class="input-field col s12">
-            <input data-bind="textInput: host" id="server" type="text" class="validate">
+            <input data-bind="textInput: host" id="server" type="text" placeholder="IP address" class="validate">
             <label class="active" for="server">Server host</label>
           </div>
         </div>
