@@ -117,6 +117,9 @@ final class DataModel {
 
     @Function 
     static void doSearch(Data model) {
+        if (model.getTab() == Tab.SEARCHLINE) {
+            model.setMessage("");
+        }
         model.setTab(Tab.SEARCHLINE);
         model.updateStatus();
     }
