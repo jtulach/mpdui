@@ -67,11 +67,18 @@
                     </div>
                 </div>
                 </form>
-                <a class="waves-effect waves-light btn-large" data-bind="click: $root.play"><i class="material-icons left">play_arrow</i></a>
-                <a class="waves-effect waves-light btn-large" data-bind="click: $root.pause"><i class="material-icons left">pause</i></a>
-                <a class="waves-effect waves-light btn-large" data-bind="click: $root.playNext"><i class="material-icons left">skip_next</i></a>
+                <div class="fixed-action-btn">
+                  <a data-bind="click: $root.play" class="btn-floating btn-large red">
+                    <i class="large material-icons">play_arrow</i>
+                  </a>
+                  <a data-bind="click: $root.pause" class="btn-floating btn-large red">
+                    <i class="large material-icons">pause</i>
+                  </a>
+                  <a data-bind="click: $root.playNext" class="btn-floating btn-large red">
+                    <i class="large material-icons">skip_next</i>
+                  </a>
+                 </div>
             </div>
-
         </div>
 
         <div data-bind="visible: searching">
