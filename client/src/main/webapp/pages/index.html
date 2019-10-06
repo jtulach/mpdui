@@ -30,23 +30,15 @@
     </head>
     <body>
         <div class="navbar-fixed">
-            <nav data-bind="visible: searchline">
-                <div class="nav-wrapper">
-                    <form>
-                        <div class="input-field">
-                            <input data-bind="textInput:  message" id="search" type="search" required>
-                            <label class="label-icon" for="search"><i class="material-icons">search</i></label>
-                            <a href="#" data-bind="click:doMain"><i class="material-icons">close</i></a>
-                        </div>
-                    </form>
-                </div>
-            </nav>
-            <nav data-bind="visible: !searchline()">
+            <nav>
                 <div class="nav-wrapper" >
-                    <a href="#" data-bind="click:doMain" class="brand-logo center">MPD UI</a>
-                    <ul id="nav-mobile" class="right hide-on-med-and-down">
-                        <li><a href="#" data-bind="click:doList"><i class="material-icons">list</i></a></li>
+                    <a href="#" data-bind="click:doMain" class="brand-logo left">MPD UI</a>
+                    <ul id="nav-mobile" class="right">
+                        <li data-bind="visible: searchline">
+                            <input data-bind="textInput:  message" id="search" type="search" required>
+                        </li>
                         <li><a href="#" data-bind="click:doSearch"><i class="material-icons">search</i></a></li>
+                        <li><a href="#" data-bind="click:doList"><i class="material-icons">list</i></a></li>
                         <li><a href="#" data-bind="click:doSettings"><i class="material-icons">settings</i></a></li>
                         <li><a href="#" data-bind="click:refresh"><i class="material-icons">refresh</i></a></li>
                     </ul>
@@ -75,7 +67,7 @@
                     </div>
                 </div>
                 </form>
-                <a class="waves-effect waves-light btn-large" data-bind="click: $root.play"><i class="material-icons left">play_array</i></a>
+                <a class="waves-effect waves-light btn-large" data-bind="click: $root.play"><i class="material-icons left">play_arrow</i></a>
                 <a class="waves-effect waves-light btn-large" data-bind="click: $root.pause"><i class="material-icons left">pause</i></a>
                 <a class="waves-effect waves-light btn-large" data-bind="click: $root.playNext"><i class="material-icons left">skip_next</i></a>
             </div>
