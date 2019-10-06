@@ -61,7 +61,18 @@
                         <label for="album">Album</label>
                     </div>
                 </form>
+                <form action="#">
+                </form>
                 <div class="fixed-action-btn">
+                  <p class="range-field">
+                      <input data-bind="value: $root.volume" type="range" id="test5" min="0" max="100"/>
+                  </p>
+                  <a data-bind="click: $root.volumeDown" class="btn-floating btn-large gray">
+                    <i class="large material-icons">volume_down</i>
+                  </a>
+                  <a data-bind="click: $root.volumeUp" class="btn-floating btn-large gray">
+                    <i class="large material-icons">volume_up</i>
+                  </a>
                   <a data-bind="click: $root.play" class="btn-floating btn-large red">
                     <i class="large material-icons">play_arrow</i>
                   </a>

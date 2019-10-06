@@ -28,8 +28,11 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import net.java.html.json.ComputedProperty;
 import net.java.html.json.Models;
+import org.bff.javampd.player.Player;
 import org.bff.javampd.player.PlayerChangeEvent;
 import org.bff.javampd.player.PlayerChangeListener;
+import org.bff.javampd.player.VolumeChangeEvent;
+import org.bff.javampd.player.VolumeChangeListener;
 import org.bff.javampd.playlist.PlaylistDatabase;
 import org.bff.javampd.server.MPD;
 import org.bff.javampd.song.MPDSong;
@@ -38,6 +41,7 @@ import org.bff.javampd.song.SongDatabase;
 @Model(className = "Data", targetId = "", instance = true, builder = "put", properties = {
     @Property(name = "message", type = String.class),
     @Property(name = "tab", type = DataModel.Tab.class),
+    @Property(name = "volume", type = int.class),
     @Property(name = "host", type = String.class),
     @Property(name = "currentSong", type = Song.class),
     @Property(name = "foundSongs", type = Song.class, array = true),
@@ -60,7 +64,9 @@ final class DataModel {
     void updateStatus(Data model) {
         final MPD server = mpd(model);
         {
-            MPDSong s = server.getPlayer().getCurrentSong();
+            final Player player = server.getPlayer();
+            MPDSong s = player.getCurrentSong();
+            model.setVolume(player.getVolume());
             model.getCurrentSong().read(s);
         }
         {
@@ -132,6 +138,38 @@ final class DataModel {
     @Function
     static void doList(Data model) {
         model.setTab(Tab.PLAYLIST);
+    }
+    
+    @Function
+    void volumeUp(Data model) {
+        volumeChange(model, Math.min(100, model.getVolume() + 10));
+    }
+
+    @Function
+    void volumeDown(Data model) {
+        volumeChange(model, Math.max(0, model.getVolume() - 10));
+    }
+    
+    @OnPropertyChange("volume")
+    void volumeChange(Data model) {
+        volumeChange(model, model.getVolume());
+    }
+    
+    private void volumeChange(Data model, int value) {
+        final MPD server = mpd(model);
+        final Player player = server.getPlayer();
+        if (player.getVolume() == value) {
+            return;
+        }
+        final VolumeChangeListener onVolumeChange = new VolumeChangeListener() {
+            @Override
+            public void volumeChanged(VolumeChangeEvent event) {
+                player.removeVolumeChangedListener(this);
+                model.setVolume(event.getVolume());
+            }
+        };
+        player.addVolumeChangeListener(onVolumeChange);
+        player.setVolume(value);
     }
 
     @OnPropertyChange("message")
