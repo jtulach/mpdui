@@ -117,6 +117,7 @@ final class DataModel {
     @Function 
     static void doSearch(Data model) {
         model.setTab(Tab.SEARCHLINE);
+        model.updateStatus();
     }
 
     @Function
@@ -132,7 +133,7 @@ final class DataModel {
     @OnPropertyChange("message")
     void search(Data model) {
         final String msg = model.getMessage();
-        if (!searching(model.getTab())) {
+        if (msg.length() < 3) {
             return;
         }
         final MPD d = mpd(model);
@@ -197,7 +198,8 @@ final class DataModel {
     }
 
     @Function
-    void refresh(Data model) {
+    void doRefresh(Data model) {
+        model.setTab(Tab.MAIN);
         model.updateStatus();
     }
 
