@@ -119,6 +119,7 @@
                         <exclude>**/build/**</exclude>
                         <exclude>**/target/**</exclude>
                         <exclude>**/webapp/pages/materialize.*</exclude>
+                        <exclude>**/nb-configuration.xml</exclude>
                     </excludes>
                 </configuration>
             </plugin>
