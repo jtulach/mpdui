@@ -1,4 +1,5 @@
 target
 .gradle
 build
+nb-configuration.xml
 

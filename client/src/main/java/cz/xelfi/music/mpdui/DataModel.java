@@ -37,18 +37,21 @@ import org.bff.javampd.player.VolumeChangeEvent;
 import org.bff.javampd.player.VolumeChangeListener;
 import org.bff.javampd.playlist.PlaylistDatabase;
 import org.bff.javampd.server.MPD;
+import org.bff.javampd.server.MPDConnectionException;
 import org.bff.javampd.song.MPDSong;
 import org.bff.javampd.song.SongDatabase;
 
 @Model(className = "Data", targetId = "", instance = true, builder = "put", properties = {
     @Property(name = "message", type = String.class),
     @Property(name = "messageSelected", type = boolean.class),
+    @Property(name = "connectionError", type = String.class),
     @Property(name = "tab", type = DataModel.Tab.class),
     @Property(name = "volume", type = int.class),
     @Property(name = "elapsed", type = int.class),
     @Property(name = "total", type = int.class),
     @Property(name = "playing", type = boolean.class),
     @Property(name = "host", type = String.class),
+    @Property(name = "port", type = int.class),
     @Property(name = "currentSong", type = Song.class),
     @Property(name = "foundSongs", type = Song.class, array = true),
     @Property(name = "playlist", type = Song.class, array = true),
@@ -85,7 +88,7 @@ final class DataModel {
             model.getPlaylist().addAll(playing);
         }
     }
-    
+
     @ModelOperation
     void updateUI(Data model) {
         if (model.isPlaying()) {
@@ -97,7 +100,7 @@ final class DataModel {
             }
         }
     }
-    
+
     @Function
     void addSong(Data model, Song data) {
         model.getFoundSongs().remove(data);
@@ -137,7 +140,7 @@ final class DataModel {
     static boolean settingup(Tab tab) {
         return tab == Tab.SETTINGS;
     }
-    
+
     @ComputedProperty
     static String elapsedMinSec(int elapsed) {
         int min = elapsed / 60;
@@ -152,7 +155,7 @@ final class DataModel {
         model.setTab(Tab.SETTINGS);
     }
 
-    @Function 
+    @Function
     static void doSearch(Data model) {
         if (model.getTab() == Tab.SEARCHLINE) {
             model.setMessage("");
@@ -171,7 +174,7 @@ final class DataModel {
     static void doList(Data model) {
         model.setTab(Tab.PLAYLIST);
     }
-    
+
     @Function
     void volumeUp(Data model) {
         volumeChange(model, Math.min(100, model.getVolume() + 10));
@@ -181,12 +184,12 @@ final class DataModel {
     void volumeDown(Data model) {
         volumeChange(model, Math.max(0, model.getVolume() - 10));
     }
-    
+
     @OnPropertyChange("volume")
     void volumeChange(Data model) {
         volumeChange(model, model.getVolume());
     }
-    
+
     private void volumeChange(Data model, int value) {
         final MPD server = mpd(model);
         final Player player = server.getPlayer();
@@ -246,12 +249,45 @@ final class DataModel {
         return arr;
     }
 
+    @OnPropertyChange({ "host", "port" })
+    void resetMpd(Data model) {
+        if (mpd != null && mpd.isConnected()) {
+            mpd.close();
+        }
+        mpd = null;
+        try {
+            mpd(model);
+        } catch (MPDConnectionException ex) {
+            // OK, go on
+        }
+    }
+
     private MPD mpd(Data model) {
         if (mpd == null) {
-            mpd = new MPD.Builder()
-                .server(model.getHost())
-                .build();
-            mpd.getPlayer().addPlayerChangeListener(listener);
+            MPD tmp;
+            try {
+                final String host = model.getHost();
+                final int port = model.getPort();
+                if (host == null || host.isEmpty()) {
+                    throw new MPDConnectionException("Specify host name or IP");
+                }
+                if (port < 0) {
+                    throw new MPDConnectionException("Port must be a number, usually 6600");
+                }
+                tmp = new MPD.Builder()
+                    .server(host)
+                    .port(port)
+                    .build();
+                tmp.getPlayer().addPlayerChangeListener(listener);
+            } catch (MPDConnectionException ex) {
+                model.setConnectionError(ex.getMessage());
+                model.setTab(Tab.SETTINGS);
+                throw ex;
+            }
+
+            model.setConnectionError("OK");
+            mpd = tmp;
+
             exec = Executors.newSingleThreadExecutor();
             updates = new Timer("Background MPD UI Tasks");
             TimerTask task = new RunnableTask(model::updateUI);
@@ -303,6 +339,7 @@ final class DataModel {
      */
     static void onPageLoad(PlatformServices services) {
         Data ui = new Data()
+            .putPort(6600)
             .putHost("bigmac");
 
         ui.initServices(services);
