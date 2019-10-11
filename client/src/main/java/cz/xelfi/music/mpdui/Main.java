@@ -25,11 +25,14 @@ public final class Main {
     }
 
     public static void main(String... args) throws Exception {
+        System.setProperty("com.dukescript.presenters.browserPort", "6680");
+        System.setProperty("com.dukescript.presenters.browser", "NONE");
         BrowserBuilder.newBrowser().
             loadPage("pages/index.html").
             loadClass(Main.class).
             invoke("onPageLoad", args).
             showAndWait();
+        System.in.read();
         System.exit(0);
     }
 
