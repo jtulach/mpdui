@@ -64,4 +64,18 @@
                 <activatedProfile>browser-presenter</activatedProfile>
             </activatedProfiles>
         </action>
+        <action>
+            <actionName>CUSTOM-Build Server App</actionName>
+            <displayName>Build Server App</displayName>
+            <goals>
+                <goal>clean</goal>
+                <goal>package</goal>
+            </goals>
+            <properties>
+                <skipTests>true</skipTests>
+            </properties>
+            <activatedProfiles>
+                <activatedProfile>browser-presenter</activatedProfile>
+            </activatedProfiles>
+        </action>
 </actions>
