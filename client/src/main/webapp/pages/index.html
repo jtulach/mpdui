@@ -35,7 +35,7 @@
                     <a href="#" data-bind="click:doMain" class="brand-logo left">MPD UI</a>
                     <ul id="nav-mobile" class="right">
                         <li data-bind="visible: searchline">
-                            <input data-bind="textInput:  message" id="search" placeholder="title, artist, etc." type="search" required>
+                            <input data-bind="textInput:  message, hasFocus: messageSelected" id="search" placeholder="title, artist, etc." type="search" required>
                         </li>
                         <li><a href="#" data-bind="click:doSearch"><i class="material-icons">search</i></a></li>
                         <li><a href="#" data-bind="click:doList"><i class="material-icons">list</i></a></li>

@@ -42,6 +42,7 @@ import org.bff.javampd.song.SongDatabase;
 
 @Model(className = "Data", targetId = "", instance = true, builder = "put", properties = {
     @Property(name = "message", type = String.class),
+    @Property(name = "messageSelected", type = boolean.class),
     @Property(name = "tab", type = DataModel.Tab.class),
     @Property(name = "volume", type = int.class),
     @Property(name = "elapsed", type = int.class),
@@ -157,6 +158,7 @@ final class DataModel {
             model.setMessage("");
         }
         model.setTab(Tab.SEARCHLINE);
+        model.setMessageSelected(true);
         model.updateStatus();
     }
 
