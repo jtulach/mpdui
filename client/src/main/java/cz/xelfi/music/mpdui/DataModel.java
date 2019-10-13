@@ -265,6 +265,7 @@ final class DataModel {
     private MPD mpd(Data model) {
         if (mpd == null) {
             MPD tmp;
+            Listener tmpListener;
             try {
                 final String host = model.getHost();
                 final int port = model.getPort();
@@ -278,7 +279,8 @@ final class DataModel {
                     .server(host)
                     .port(port)
                     .build();
-                tmp.getPlayer().addPlayerChangeListener(listener);
+                tmpListener = new Listener(model);
+                tmp.getPlayer().addPlayerChangeListener(tmpListener);
             } catch (MPDConnectionException ex) {
                 model.setConnectionError(ex.getMessage());
                 model.setTab(Tab.SETTINGS);
@@ -287,6 +289,7 @@ final class DataModel {
 
             model.setConnectionError("OK");
             mpd = tmp;
+            listener = tmpListener;
 
             exec = Executors.newSingleThreadExecutor();
             updates = new Timer("Background MPD UI Tasks");
@@ -327,7 +330,6 @@ final class DataModel {
 
     @ModelOperation
     void initServices(Data model, PlatformServices services) {
-        this.listener = new Listener(model);
         this.services = services;
         String previousMessage = services.getPreferences("message");
         if (previousMessage != null) {
