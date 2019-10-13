@@ -25,17 +25,23 @@ public final class Main {
     }
 
     public static void main(String... args) throws Exception {
-        if (System.getProperty("com.dukescript.presenters.browserPort") == null) {
-            System.setProperty("com.dukescript.presenters.browserPort", "6680");
+        boolean server = false;
+        if (args.length >= 2 && args[0].endsWith("server")) {
+            server = true;
+            System.setProperty("com.dukescript.presenters.browserPort", args[1]);
+            System.setProperty("com.dukescript.presenters.browser", "NONE");
         }
-        System.setProperty("com.dukescript.presenters.browser", "NONE");
         BrowserBuilder.newBrowser().
             loadPage("pages/index.html").
             loadClass(Main.class).
-            invoke("onPageLoad", args).
+            invoke("onPageLoad").
             showAndWait();
-        System.in.read();
-        System.exit(0);
+        
+        if (server) {
+            while (true) {
+                Thread.sleep(100);
+            }
+        }
     }
 
     /**
