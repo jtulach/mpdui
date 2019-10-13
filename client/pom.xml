@@ -21,6 +21,7 @@
     <project.mainclass>cz.xelfi.music.mpdui.Main</project.mainclass>
     <exec.java.bin>${java.home}/bin/java</exec.java.bin>
     <exec.debug.arg>-Ddebug=false</exec.debug.arg>
+    <exec.server.arg>-Ddebug=false</exec.server.arg>
     <exec.springloaded>-javaagent:${project.build.directory}/springloaded.jar</exec.springloaded>
   </properties>
   <build>
@@ -86,6 +87,8 @@
                        <argument>-Dnetbeans.inspect.port=${netbeans.inspect.port}</argument>
                        <argument>${exec.debug.arg}</argument>
                        <argument>${project.mainclass}</argument>
+                       <argument>${exec.server.arg}</argument>
+                       <argument>6680</argument>
                    </arguments>
                 </configuration>
           </plugin>

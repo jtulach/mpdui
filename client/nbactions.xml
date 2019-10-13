@@ -59,11 +59,14 @@
         </action>
         <action>
             <actionName>CUSTOM-Browser-Presenter</actionName>
-            <displayName>Run with Browser Presenter</displayName>
+            <displayName>Run as Server</displayName>
             <goals>
                 <goal>process-classes</goal>
                 <goal>exec:exec</goal>
             </goals>
+            <properties>
+                <exec.server.arg>server</exec.server.arg>
+            </properties>
             <activatedProfiles>
                 <activatedProfile>browser-presenter</activatedProfile>
             </activatedProfiles>

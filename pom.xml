@@ -20,12 +20,12 @@
         <module>js</module>
     </modules>
     <properties>
-        <net.java.html.version>1.5.1</net.java.html.version>
-        <bck2brwsr.version>0.22</bck2brwsr.version>
+        <net.java.html.version>1.6.1</net.java.html.version>
+        <bck2brwsr.version>0.31</bck2brwsr.version>
         <bck2brwsr.obfuscationlevel>MINIMAL</bck2brwsr.obfuscationlevel>
         <junit.browser.version>1.0</junit.browser.version>
         <jersey.version>2.13</jersey.version>
-        <presenters.version>1.5.2</presenters.version>
+        <presenters.version>1.6.2</presenters.version>
         <enforcer.fail>false</enforcer.fail>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
