@@ -83,7 +83,7 @@ final class DataModel {
             model.getCurrentSong().read(s);
         }
         {
-            List<Song> playing = convertSongs(server.getPlaylist().getSongList(), 100);
+            List<Song> playing = convertSongs(server.getPlaylist().getSongList(), model.getCurrentSong(), 100);
             model.getPlaylist().clear();
             model.getPlaylist().addAll(playing);
         }
@@ -231,16 +231,19 @@ final class DataModel {
 
     @ModelOperation
     void applySongs(Data model, Collection<MPDSong> songs) {
-        List<Song> arr = convertSongs(songs, 100);
+        List<Song> arr = convertSongs(songs, model.getCurrentSong(), 100);
         model.getFoundSongs().clear();
         model.getFoundSongs().addAll(arr);
     }
 
-    private static List<Song> convertSongs(final Collection<MPDSong> result, int maxItems) {
+    private static List<Song> convertSongs(final Collection<MPDSong> result, Song current, int maxItems) {
         List<Song> arr = Models.asList();
         for (MPDSong s : result) {
             Song n = new Song();
             n.read(s);
+            if (n.equals(current)) {
+                n.setImportant(true);
+            }
             arr.add(n);
             if (arr.size() >= maxItems) {
                 break;
@@ -382,6 +385,7 @@ final class DataModel {
         @Property(name = "track", type = int.class),
         @Property(name = "id", type = int.class),
         @Property(name = "position", type = int.class),
+        @Property(name = "important", type = boolean.class),
     })
     static final class SongCntrl {
         private MPDSong song;
