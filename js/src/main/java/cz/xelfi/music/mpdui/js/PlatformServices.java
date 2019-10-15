@@ -64,6 +64,14 @@ public class PlatformServices {
         };
     }
 
+    public String getLocation(String attr) {
+        return getLocationImpl(attr);
+    }
+
+    public void setLocation(String attr, String value) {
+        setLocationImpl(attr, value);
+    }
+
     @JavaScriptBody(args = { "key" }, body =
         "if (!window.localStorage) return null;\n" +
         "return window.localStorage.getItem(key);\n"
@@ -103,4 +111,18 @@ public class PlatformServices {
             + "return [x, y];\n"
     )
     static native Object[] screenSizeImpl();
+
+    @JavaScriptBody(args = { "attr" }, body
+            = "var w = window || document;\n"
+            + "return w.location[attr];\n"
+    )
+    static native String getLocationImpl(String attr);
+
+    @JavaScriptBody(args = { "attr", "value" }, body
+            = "var w = window || document;\n"
+            + "w.location[attr] = value;\n"
+    )
+    static native void setLocationImpl(String attr, String value);
+
+
 }

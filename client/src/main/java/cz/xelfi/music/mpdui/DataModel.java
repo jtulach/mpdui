@@ -185,6 +185,13 @@ final class DataModel {
         volumeChange(model, Math.max(0, model.getVolume() - 10));
     }
 
+    @OnPropertyChange("tab")
+    void tabChange(Data model) {
+        if (services != null) {
+            services.setLocation("hash", "#" + model.getTab().toString());
+        }
+    }
+
     @OnPropertyChange("volume")
     void volumeChange(Data model) {
         volumeChange(model, model.getVolume());
@@ -348,6 +355,18 @@ final class DataModel {
             .putHost("bigmac");
 
         ui.initServices(services);
+
+        String hash = services.getLocation("hash");
+        if (hash.startsWith("#")) {
+            hash = hash.substring(1);
+            for (Tab t : Tab.values()) {
+                if (hash.equals(t.toString())) {
+                    ui.setTab(t);
+                    break;
+                }
+            }
+        }
+
         ui.applyBindings();
         ui.updateStatus();
     }
