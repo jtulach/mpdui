@@ -21,7 +21,6 @@
         <netbeans.compile.on.save>none</netbeans.compile.on.save>
         <moe.version>1.4</moe.version>
         <moe.maven.version>1.4.1</moe.maven.version>
-        <presenters.version>1.5.2</presenters.version>
     </properties>
     <pluginRepositories>
         <pluginRepository>

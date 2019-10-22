@@ -43,16 +43,6 @@ public class PlatformServices {
     }
 
     /**
-     * Shows confirmation dialog to the user.
-     *
-     * @param msg the message
-     * @param callback called back when the use accepts (can be null)
-     */
-    public void confirmByUser(String msg, Runnable callback) {
-        confirmImpl(msg, callback);
-    }
-
-    /**
      * Obtains size of the screen.
      * @return array with two numbers: width and height
      */

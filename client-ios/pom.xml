@@ -20,7 +20,6 @@
         <project.mainclass>cz.xelfi.music.mpdui.iOSMain</project.mainclass>
         <netbeans.compile.on.save>none</netbeans.compile.on.save>
         <robovm.version>2.3.5</robovm.version>
-        <presenters.version>1.5.2</presenters.version>
     </properties>
     <build>
         <plugins>
