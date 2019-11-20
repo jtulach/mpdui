@@ -22,7 +22,9 @@ import net.java.html.json.Property;
 import net.java.html.json.ModelOperation;
 import net.java.html.json.OnPropertyChange;
 import cz.xelfi.music.mpdui.js.PlatformServices;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -217,13 +219,11 @@ final class DataModel {
     @OnPropertyChange("message")
     void search(Data model) {
         final String msg = model.getMessage();
-        if (msg.length() < 3) {
-            return;
-        }
         final MPD d = mpd(model);
         Runnable r = () -> {
             final SongDatabase db = d.getMusicDatabase().getSongDatabase();
-            final Collection<MPDSong> result = db.searchAny(msg);
+            final List<MPDSong> result = new ArrayList<>();
+            result.addAll(db.searchAny(msg));
             PlaylistDatabase pdb = d.getMusicDatabase().getPlaylistDatabase();
             for (String list : pdb.listPlaylists()) {
                 if (list.contains(msg) || list.toLowerCase().contains(msg.toLowerCase())) {
@@ -231,6 +231,7 @@ final class DataModel {
                     result.addAll(playList);
                 }
             }
+            Collections.shuffle(result);
             model.applySongs(result);
         };
         exec.execute(r);
