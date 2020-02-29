@@ -285,7 +285,7 @@
           <id>webkit-presenter</id>
           <dependencies>
               <dependency>
-                  <groupId>com.dukescript.presenters</groupId>
+                  <groupId>org.netbeans.html</groupId>
                   <artifactId>webkit</artifactId>
                   <version>${presenters.version}</version>
                   <scope>runtime</scope>
@@ -333,7 +333,7 @@
           <id>browser-presenter</id>
           <dependencies>
               <dependency>
-                  <groupId>com.dukescript.presenters</groupId>
+                  <groupId>org.netbeans.html</groupId>
                   <artifactId>browser</artifactId>
                   <version>${presenters.version}</version>
                   <scope>runtime</scope>
