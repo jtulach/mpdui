@@ -74,8 +74,7 @@ final class DataModel {
 
     @ModelOperation
     void updateStatus(Data model) {
-        final MPD server = mpd(model);
-        {
+        withMpd(model, (server) -> {
             final Player player = server.getPlayer();
             MPDSong s = player.getCurrentSong();
             model.setVolume(player.getVolume());
@@ -83,12 +82,10 @@ final class DataModel {
             model.setTotal((int) player.getTotalTime());
             model.setPlaying(player.getStatus() == Player.Status.STATUS_PLAYING);
             model.getCurrentSong().read(s);
-        }
-        {
             List<Song> playing = convertSongs(server.getPlaylist().getSongList(), model.getCurrentSong(), 100);
             model.getPlaylist().clear();
             model.getPlaylist().addAll(playing);
-        }
+        });
     }
 
     @ModelOperation
@@ -105,17 +102,21 @@ final class DataModel {
 
     @Function
     void addSong(Data model, Song data) {
-        model.getFoundSongs().remove(data);
-        mpd(model).getPlaylist().addSong(data.getFile());
-        model.updateStatus();
+        withMpd(model, (server) -> {
+            model.getFoundSongs().remove(data);
+            server.getPlaylist().addSong(data.getFile());
+            model.updateStatus();
+        });
     }
 
     @Function
     void removeSong(Data model, Song data) {
-        data.withSong(s -> {
-            mpd(model).getPlaylist().removeSong(s);
+        withMpd(model, (server) -> {
+            data.withSong(s -> {
+                server.getPlaylist().removeSong(s);
+            });
+            model.updateStatus();
         });
-        model.updateStatus();
     }
 
     @ComputedProperty
@@ -200,41 +201,43 @@ final class DataModel {
     }
 
     private void volumeChange(Data model, int value) {
-        final MPD server = mpd(model);
-        final Player player = server.getPlayer();
-        if (player.getVolume() == value) {
-            return;
-        }
-        final VolumeChangeListener onVolumeChange = new VolumeChangeListener() {
-            @Override
-            public void volumeChanged(VolumeChangeEvent event) {
-                player.removeVolumeChangedListener(this);
-                model.setVolume(event.getVolume());
+        withMpd(model, (server) -> {
+            final Player player = server.getPlayer();
+            if (player.getVolume() == value) {
+                return;
             }
-        };
-        player.addVolumeChangeListener(onVolumeChange);
-        player.setVolume(value);
+            final VolumeChangeListener onVolumeChange = new VolumeChangeListener() {
+                @Override
+                public void volumeChanged(VolumeChangeEvent event) {
+                    player.removeVolumeChangedListener(this);
+                    model.setVolume(event.getVolume());
+                }
+            };
+            player.addVolumeChangeListener(onVolumeChange);
+            player.setVolume(value);
+        });
     }
 
     @OnPropertyChange("message")
     void search(Data model) {
         final String msg = model.getMessage();
-        final MPD d = mpd(model);
-        Runnable r = () -> {
-            final SongDatabase db = d.getMusicDatabase().getSongDatabase();
-            final List<MPDSong> result = new ArrayList<>();
-            result.addAll(db.searchAny(msg));
-            PlaylistDatabase pdb = d.getMusicDatabase().getPlaylistDatabase();
-            for (String list : pdb.listPlaylists()) {
-                if (list.contains(msg) || list.toLowerCase().contains(msg.toLowerCase())) {
-                    Collection<MPDSong> playList = pdb.listPlaylistSongs(list);
-                    result.addAll(playList);
+        withMpd(model, (d) -> {
+            Runnable r = () -> {
+                final SongDatabase db = d.getMusicDatabase().getSongDatabase();
+                final List<MPDSong> result = new ArrayList<>();
+                result.addAll(db.searchAny(msg));
+                PlaylistDatabase pdb = d.getMusicDatabase().getPlaylistDatabase();
+                for (String list : pdb.listPlaylists()) {
+                    if (list.contains(msg) || list.toLowerCase().contains(msg.toLowerCase())) {
+                        Collection<MPDSong> playList = pdb.listPlaylistSongs(list);
+                        result.addAll(playList);
+                    }
                 }
-            }
-            Collections.shuffle(result);
-            model.applySongs(result);
-        };
-        exec.execute(r);
+                Collections.shuffle(result);
+                model.applySongs(result);
+            };
+            exec.execute(r);
+        });
     }
 
     @ModelOperation
@@ -270,6 +273,14 @@ final class DataModel {
             mpd(model);
         } catch (MPDConnectionException ex) {
             // OK, go on
+        }
+    }
+
+    private void withMpd(Data model, With<MPD> operation) {
+        try {
+            operation.with(mpd(model));
+        } catch (MPDConnectionException ex) {
+            model.setConnectionError(ex.getLocalizedMessage());
         }
     }
 
@@ -312,17 +323,23 @@ final class DataModel {
 
 
     @Function void play(Data model) {
-        mpd(model).getPlayer().play();
+        withMpd(model, (server) -> {
+            server.getPlayer().play();
+        });
     }
 
     @Function
     void pause(final Data model) {
-        mpd(model).getPlayer().pause();
+        withMpd(model, (server) -> {
+            server.getPlayer().pause();
+        });
     }
 
     @Function
     void playNext(final Data model) {
-        mpd(model).getPlayer().playNext();
+        withMpd(model, (server) -> {
+            server.getPlayer().playNext();
+        });
     }
 
     @Function
@@ -472,5 +489,10 @@ final class DataModel {
         public void run() {
             run.run();
         }
+    }
+
+    @FunctionalInterface
+    private static interface With<M> {
+        void with(M mpd);
     }
 }
