@@ -32,6 +32,7 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import net.java.html.json.ComputedProperty;
 import net.java.html.json.Models;
+import org.bff.javampd.MPDException;
 import org.bff.javampd.player.Player;
 import org.bff.javampd.player.PlayerChangeEvent;
 import org.bff.javampd.player.PlayerChangeListener;
@@ -229,8 +230,12 @@ final class DataModel {
                 PlaylistDatabase pdb = d.getMusicDatabase().getPlaylistDatabase();
                 for (String list : pdb.listPlaylists()) {
                     if (list.contains(msg) || list.toLowerCase().contains(msg.toLowerCase())) {
-                        Collection<MPDSong> playList = pdb.listPlaylistSongs(list);
-                        result.addAll(playList);
+                        try {
+                            Collection<MPDSong> playList = pdb.listPlaylistSongs(list);
+                            result.addAll(playList);
+                        } catch (MPDException ex) {
+                            // ignore
+                        }
                     }
                 }
                 Collections.shuffle(result);
