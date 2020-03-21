@@ -335,7 +335,7 @@
               <dependency>
                   <groupId>org.netbeans.html</groupId>
                   <artifactId>browser</artifactId>
-                  <version>${presenters.version}</version>
+                  <version>${net.java.html.version}</version>
                   <scope>runtime</scope>
               </dependency>
           </dependencies>
