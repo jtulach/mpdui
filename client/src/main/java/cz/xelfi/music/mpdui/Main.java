@@ -30,6 +30,7 @@ public final class Main {
             server = true;
             System.setProperty("com.dukescript.presenters.browserPort", args[1]);
             System.setProperty("com.dukescript.presenters.browser", "NONE");
+            System.setProperty("com.dukescript.presenters.browserDebug", "true");
         }
         BrowserBuilder.newBrowser().
             loadPage("pages/index.html").
