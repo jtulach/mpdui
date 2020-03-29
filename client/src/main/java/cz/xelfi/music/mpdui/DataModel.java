@@ -276,8 +276,10 @@ final class DataModel {
         mpd = null;
         try {
             mpd(model);
-            services.setPreferences("host", model.getHost());
-            services.setPreferences("port", "" + model.getPort());
+            if (services != null) {
+                services.setPreferences("host", model.getHost());
+                services.setPreferences("port", "" + model.getPort());
+            }
             model.updateStatus();
             model.setTab(Tab.MAIN);
         } catch (MPDConnectionException ex) {
@@ -392,7 +394,7 @@ final class DataModel {
     static void onPageLoad(PlatformServices services) {
         Data ui = new Data()
             .putPort(6600)
-            .putHost("bigmac");
+            .putHost("localhost");
 
         ui.initServices(services);
 
