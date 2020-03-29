@@ -276,6 +276,10 @@ final class DataModel {
         mpd = null;
         try {
             mpd(model);
+            services.setPreferences("host", model.getHost());
+            services.setPreferences("port", "" + model.getPort());
+            model.updateStatus();
+            model.setTab(Tab.MAIN);
         } catch (MPDConnectionException ex) {
             // OK, go on
         }
@@ -367,6 +371,19 @@ final class DataModel {
         String previousMessage = services.getPreferences("message");
         if (previousMessage != null) {
             model.setMessage(previousMessage);
+        }
+        String previousHost = services.getPreferences("host");
+        if (previousHost != null) {
+            model.setHost(previousHost);
+        }
+        String previousPort = services.getPreferences("port");
+        if (previousPort != null) {
+            try {
+                int port = Integer.parseInt(previousPort);
+                model.setPort(port);
+            } catch (NumberFormatException ex) {
+                // OK
+            }
         }
     }
     /**
