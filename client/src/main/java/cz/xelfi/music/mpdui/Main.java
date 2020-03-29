@@ -17,6 +17,9 @@
 package cz.xelfi.music.mpdui;
 
 import cz.xelfi.music.mpdui.js.PlatformServices;
+import java.util.logging.ConsoleHandler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.prefs.Preferences;
 import net.java.html.boot.BrowserBuilder;
 
@@ -25,6 +28,11 @@ public final class Main {
     }
 
     public static void main(String... args) throws Exception {
+        Logger log = Logger.getLogger("org.netbeans.html.presenters");
+        final ConsoleHandler ch = new ConsoleHandler();
+        ch.setLevel(Level.FINE);
+        log.setLevel(Level.FINE);
+        log.addHandler(ch);
         boolean server = false;
         if (args.length >= 2 && args[0].endsWith("server")) {
             server = true;
