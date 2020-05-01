@@ -88,7 +88,7 @@
                        <argument>${exec.debug.arg}</argument>
                        <argument>${project.mainclass}</argument>
                        <argument>${exec.server.arg}</argument>
-                       <argument>6680</argument>
+                       <argument>6681</argument>
                    </arguments>
                 </configuration>
           </plugin>
