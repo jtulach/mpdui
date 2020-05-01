@@ -26,8 +26,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.concurrent.Callable;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import net.java.html.json.ComputedProperty;
@@ -67,11 +66,10 @@ final class DataModel {
         PLAYLIST,
     }
 
-    private Listener listener;
+    private ConnectedToMpd connection;
     private PlatformServices services;
-    private MPD mpd;
-    private Executor exec;
-    private Timer updates;
+    private final Executor exec = Executors.newSingleThreadExecutor();
+    private final RefreshOnBackground updates = new RefreshOnBackground();
 
     @ModelOperation
     void updateStatus(Data model) {
@@ -270,10 +268,11 @@ final class DataModel {
 
     @OnPropertyChange({ "host", "port" })
     void resetMpd(Data model) {
-        if (mpd != null && mpd.isConnected()) {
-            mpd.close();
+        ConnectedToMpd l = this.connection;
+        if (l != null) {
+            l.close();
         }
-        mpd = null;
+        this.connection = null;
         try {
             mpd(model);
             if (services != null) {
@@ -296,9 +295,9 @@ final class DataModel {
     }
 
     private MPD mpd(Data model) {
-        if (mpd == null) {
+        if (connection == null) {
             MPD tmp;
-            Listener tmpListener;
+            ConnectedToMpd tmpListener;
             try {
                 final String host = model.getHost();
                 final int port = model.getPort();
@@ -312,7 +311,7 @@ final class DataModel {
                     .server(host)
                     .port(port)
                     .build();
-                tmpListener = new Listener(model);
+                tmpListener = new ConnectedToMpd(tmp, model);
                 tmp.getPlayer().addPlayerChangeListener(tmpListener);
             } catch (MPDConnectionException ex) {
                 model.setConnectionError(ex.getMessage());
@@ -321,15 +320,11 @@ final class DataModel {
             }
 
             model.setConnectionError("OK");
-            mpd = tmp;
-            listener = tmpListener;
+            connection = tmpListener;
 
-            exec = Executors.newSingleThreadExecutor();
-            updates = new Timer("Background MPD UI Tasks");
-            TimerTask task = new RunnableTask(model::updateUI);
-            updates.scheduleAtFixedRate(task, 0, 1000);
+            updates.schedule(tmpListener, 1000);
         }
-        return mpd;
+        return connection.mpd;
     }
 
 
@@ -416,20 +411,38 @@ final class DataModel {
     @Model(builder = "put", className = "PlayerStatus", properties = {
         @Property(name = "currentSong", type = Song.class)
     })
-    static final class Listener implements PlayerChangeListener {
+    static final class ConnectedToMpd implements PlayerChangeListener, Callable<Boolean> {
         final Data model;
+        final MPD mpd;
 
-        Listener(Data model) {
+        ConnectedToMpd(MPD mpd, Data model) {
             this.model = model;
+            this.mpd = mpd;
         }
 
         @Override
         public void playerChanged(PlayerChangeEvent event) {
             PlayerChangeEvent.Event ev = event.getEvent();
-            System.err.println("ev: " + ev);
-            model.updateStatus();
+            if (mpd.isConnected()) {
+                model.updateStatus();
+            }
         }
 
+        @Override
+        public Boolean call() {
+            if (mpd.isConnected()) {
+                model.updateUI();
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        void close() {
+            if (mpd.isConnected()) {
+                mpd.close();
+            }
+        }
     }
 
     @Model(builder = "put", instance = true, className = "Song", properties = {
@@ -500,19 +513,6 @@ final class DataModel {
 
     interface WithMPDSong {
         void accept(MPDSong s);
-    }
-
-    private final static class RunnableTask extends TimerTask {
-        private final Runnable run;
-
-        RunnableTask(Runnable r) {
-            this.run = r;
-        }
-
-        @Override
-        public void run() {
-            run.run();
-        }
     }
 
     @FunctionalInterface
