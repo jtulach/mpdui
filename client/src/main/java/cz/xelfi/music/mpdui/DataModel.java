@@ -481,6 +481,47 @@ final class DataModel {
             return file;
         }
 
+        @ComputedProperty
+        static String fullTitle(String title, String file) {
+            if (title != null && !title.isEmpty()) {
+                return title;
+            }
+            if (file == null) {
+                return "";
+            }
+            int lastDot = file.lastIndexOf('.');
+            int lastSlashOrDash = Math.max(file.lastIndexOf('-'), file.lastIndexOf('/'));
+            if (lastDot == -1) {
+                lastDot = file.length();
+            }
+            return file.substring(lastSlashOrDash + 1, lastDot);
+        }
+
+        @ComputedProperty
+        static String fullArtist(String artistName, String file) {
+            if (artistName != null && !artistName.isEmpty()) {
+                return artistName;
+            }
+            if (file == null) {
+                return "";
+            }
+            int lastSlash = file.lastIndexOf('/');
+            int lastDash = file.lastIndexOf('-');
+            if (lastSlash < lastDash) {
+                return file.substring(lastSlash + 1, lastDash);
+            } else {
+                return "";
+            }
+        }
+
+        @ComputedProperty
+        static String fullAlbum(String albumName, String file) {
+            if (albumName != null && !albumName.isEmpty()) {
+                return albumName;
+            }
+            return file;
+        }
+
         @ModelOperation
         void read(Song model, MPDSong s) {
             this.song = s;

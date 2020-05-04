@@ -71,7 +71,7 @@
             <div data-bind="with: currentSong" class="row center">
                 <form class="col s12">
                     <div class="input-field col s12">
-                        <input disabled data-bind="textInput: artistName" placeholder="Placeholder" id="artist" type="text" class="validate">
+                        <input disabled data-bind="textInput: fullArtist" placeholder="Placeholder" id="artist" type="text" class="validate">
                         <label for="artist">Artist</label>
                     </div>
                     <div class="input-field col s12">
@@ -85,7 +85,7 @@
                         <input disabled data-bind="value: $root.elapsed, attr: { max : $root.total }" type="range" id="at" min="0" max="100"/>
                     </div>
                     <div class="input-field col s12">
-                        <input disabled data-bind="textInput: albumName" placeholder="Placeholder" id="album" type="text" class="validate">
+                        <input disabled data-bind="textInput: fullAlbum" placeholder="Placeholder" id="album" type="text" class="validate">
                         <label for="album">Album</label>
                     </div>
                 </form>
@@ -98,10 +98,10 @@
                     <a href="#!" data-bind="click: $root.addSong">
                         <i class="material-icons circle black">add_circle_outline</i>
                     </a>
-                    <span class="title" data-bind="text: title"></span>
+                    <span class="title" data-bind="text: fullTitle"></span>
                     <p>
-                        <span data-bind="text: artistName"></span><br>
-                        <span data-bind="text: albumName"></span>
+                        <span data-bind="text: fullArtist"></span><br>
+                        <span data-bind="text: fullAlbum"></span>
                     </p>
                     <a data-bind="visible: important" href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
                 </li>
@@ -113,10 +113,10 @@
                     <a href="#!" data-bind="click: $root.removeSong">
                         <i class="material-icons circle black">remove_circle_outline</i>
                     </a>
-                    <span class="title" data-bind="text: title"></span>
+                    <span class="title" data-bind="text: fullTitle"></span>
                     <p>
-                        <span data-bind="text: artistName"></span><br>
-                        <span data-bind="text: albumName"></span>
+                        <span data-bind="text: fullArtist"></span><br>
+                        <span data-bind="text: fullAlbum"></span>
                     </p>
                     <a data-bind="visible: important" href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
                 </li>
