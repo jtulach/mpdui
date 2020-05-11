@@ -67,7 +67,7 @@
             </a>
         </div>
 
-        <div data-bind="visible: controlling">
+        <div style="display: none" data-bind="visible: controlling">
             <div data-bind="with: currentSong" class="row center">
                 <form class="col s12">
                     <div class="input-field col s12">
@@ -92,7 +92,7 @@
             </div>
         </div>
 
-        <div data-bind="visible: searching">
+        <div style="display: none" data-bind="visible: searching">
             <ul class="collection" data-bind="foreach: foundSongs">
                 <li class="collection-item avatar">
                     <a href="#!" data-bind="click: $root.addSong">
@@ -107,7 +107,8 @@
                 </li>
             </ul>
         </div>
-        <div data-bind="visible: listing">
+
+        <div style="display: none" data-bind="visible: listing">
             <ul class="collection" data-bind="foreach: playlist">
                 <li class="collection-item avatar">
                     <a href="#!" data-bind="click: $root.removeSong">
@@ -124,7 +125,7 @@
         </div>
 
 
-        <div class="row" data-bind="visible: settingup">
+        <div style="display: none" class="row" data-bind="visible: settingup">
           <div class="input-field col s10">
             <input data-bind="textInput: host" id="server" type="text" placeholder="IP address" class="validate">
             <label class="active" for="server">Server host</label>
