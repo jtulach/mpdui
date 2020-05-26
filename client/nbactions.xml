@@ -69,7 +69,6 @@
                 <skipTests>true</skipTests>
                 <jpda.listen>true</jpda.listen>
                 <exec.debug.arg>-Xrunjdwp:transport=dt_socket,server=n,address=${jpda.address}</exec.debug.arg>
-                <exec.server.arg>server</exec.server.arg>
             </properties>
             <activatedProfiles>
                 <activatedProfile>browser-presenter</activatedProfile>
