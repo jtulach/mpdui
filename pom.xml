@@ -16,8 +16,6 @@
         <!--
         <module>client-web</module>
                 -->
-        <module>client-ios</module>
-        <module>client-moe</module>
         <module>js</module>
     </modules>
     <properties>
@@ -137,6 +135,18 @@
             </activation>
             <modules>
                 <module>client-android</module>
+            </modules>
+        </profile>
+        <profile>
+            <id>osx</id>
+            <activation>
+                <os>
+                    <family>mac</family>
+                </os>
+            </activation>
+            <modules>
+                <module>client-ios</module>
+                <module>client-moe</module>
             </modules>
         </profile>
     </profiles>
