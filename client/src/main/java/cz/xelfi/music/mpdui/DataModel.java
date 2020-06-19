@@ -280,7 +280,6 @@ final class DataModel {
                 services.setPreferences("port", "" + model.getPort());
             }
             model.updateStatus();
-            model.setTab(Tab.MAIN);
         } catch (MPDConnectionException ex) {
             // OK, go on
         }
