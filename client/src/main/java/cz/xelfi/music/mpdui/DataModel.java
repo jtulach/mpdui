@@ -272,31 +272,34 @@ final class DataModel {
         if (l != null) {
             l.close();
         }
+        model.setConnectionError("Checking connection to " + model.getHost() + ":" + model.getPort());
         this.connection = null;
-        try {
-            mpd(model);
+        withMpd(model, (player) -> {
+            model.setConnectionError("Connected to " + model.getHost() + ":" + model.getPort());
             if (services != null) {
                 services.setPreferences("host", model.getHost());
                 services.setPreferences("port", "" + model.getPort());
             }
             model.updateStatus();
-        } catch (MPDConnectionException ex) {
-            // OK, go on
-        }
+        });
     }
 
     private void withMpd(Data model, With<MPD> operation) {
-        try {
-            operation.with(mpd(model));
-        } catch (MPDConnectionException ex) {
-            model.setConnectionError(ex.getLocalizedMessage());
-        }
+        exec.execute(() -> {
+            try {
+                final MPD mpd = mpd(model);
+                operation.with(mpd);
+            } catch (MPDConnectionException ex) {
+                model.setConnectionError(ex.getLocalizedMessage());
+            }
+        });
     }
 
     private MPD mpd(Data model) {
         if (connection == null) {
             MPD tmp;
             ConnectedToMpd tmpListener;
+            String error = null;
             try {
                 final String host = model.getHost();
                 final int port = model.getPort();
@@ -311,11 +314,22 @@ final class DataModel {
                     .port(port)
                     .build();
                 tmpListener = new ConnectedToMpd(tmp, model);
-                tmp.getPlayer().addPlayerChangeListener(tmpListener);
+                final Player player = tmp.getPlayer();
+                Player.Status status = player.getStatus();
+                if (status != null) {
+                    player.addPlayerChangeListener(tmpListener);
+                } else {
+                    error = "Cannot connect to " + host + ":" + port;
+                }
             } catch (MPDConnectionException ex) {
-                model.setConnectionError(ex.getMessage());
+                tmpListener = null;
+                error = ex.getMessage();
+            }
+            
+            if (error != null) {
+                model.setConnectionError(error);
                 model.setTab(Tab.SETTINGS);
-                throw ex;
+                throw new MPDConnectionException(error);
             }
 
             model.setConnectionError("OK");
