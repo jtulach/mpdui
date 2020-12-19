@@ -146,7 +146,9 @@
             </activation>
             <modules>
                 <module>client-ios</module>
+                <!--
                 <module>client-moe</module>
+                -->
             </modules>
         </profile>
     </profiles>
