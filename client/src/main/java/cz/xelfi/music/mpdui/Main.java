@@ -28,6 +28,8 @@ public final class Main {
     }
 
     public static void main(String... args) throws Exception {
+        System.setProperty("org.netbeans.html.Generic.wait4js", "true");
+
         Logger log = Logger.getLogger("org.netbeans.html.presenters");
         final ConsoleHandler ch = new ConsoleHandler();
         ch.setLevel(Level.FINE);
