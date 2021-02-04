@@ -168,6 +168,14 @@ final class DataModel {
     }
 
     @Function
+    static void doSearchText(Data model, String data) {
+        model.setMessage(data);
+        model.setTab(Tab.SEARCHLINE);
+        model.setMessageSelected(true);
+        model.updateStatus();
+    }
+    
+    @Function
     static void doMain(Data model) {
         model.setTab(Tab.MAIN);
     }
