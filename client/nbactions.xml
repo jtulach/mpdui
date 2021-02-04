@@ -28,7 +28,7 @@
             <skipTests>true</skipTests>
         </properties>
         <activatedProfiles>
-            <activatedProfile>webkit-presenter</activatedProfile>
+            <activatedProfile>browser-presenter</activatedProfile>
         </activatedProfiles>
     </action>
     <action>
@@ -43,7 +43,7 @@
             <exec.debug.arg>-Xrunjdwp:transport=dt_socket,server=n,address=${jpda.address}</exec.debug.arg>
         </properties>
         <activatedProfiles>
-            <activatedProfile>webkit-presenter</activatedProfile>
+            <activatedProfile>browser-presenter</activatedProfile>
         </activatedProfiles>
     </action>
         <action>
