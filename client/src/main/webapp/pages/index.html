@@ -70,13 +70,13 @@
         <div style="display: none" data-bind="visible: controlling">
             <div data-bind="with: currentSong" class="row center">
                 <form class="col s12">
-                    <div class="input-field col s12">
-                        <input disabled data-bind="textInput: fullArtist" placeholder="Placeholder" id="artist" type="text" class="validate">
-                        <label for="artist">Artist</label>
+                    <div class="input-field col s12" data-bind="with: fullArtist">
+                        <input disabled data-bind="textInput: $data" placeholder="Placeholder" id="artist" type="text" class="validate">
+                        <label for="artist"><a href="#" data-bind="click: $root.doSearchText">Artist</a></label>
                     </div>
-                    <div class="input-field col s12">
-                        <input disabled data-bind="textInput: fullTitle" placeholder="Placeholder" id="name" type="text" class="validate">
-                        <label for="name">Name</label>
+                    <div class="input-field col s12" data-bind="with: fullTitle">
+                        <input disabled data-bind="textInput: $data" placeholder="Placeholder" id="name" type="text" class="validate">
+                        <label for="name"><a href="#" data-bind="click: $root.doSearchText">Name</a></label>
                     </div>
                     <div class="input-field col s12">
                         <label for="at" data-bind="text: $root.elapsedMinSec">0:00</label>
@@ -84,9 +84,9 @@
                     <div class="input-field col s12">
                         <input disabled data-bind="value: $root.elapsed, attr: { max : $root.total }" type="range" id="at" min="0" max="100"/>
                     </div>
-                    <div class="input-field col s12">
-                        <input disabled data-bind="textInput: fullAlbum" placeholder="Placeholder" id="album" type="text" class="validate">
-                        <label for="album">Album</label>
+                    <div class="input-field col s12" data-bind="with: fullAlbum">
+                        <input disabled data-bind="textInput: $data" placeholder="Placeholder" id="album" type="text" class="validate">
+                        <label for="album"><a href="#" data-bind="click: $root.doSearchText">Album</a></label>
                     </div>
                 </form>
             </div>
