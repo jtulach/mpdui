@@ -32,8 +32,8 @@ public final class Main {
 
         Logger log = Logger.getLogger("org.netbeans.html.presenters");
         final ConsoleHandler ch = new ConsoleHandler();
-        ch.setLevel(Level.FINE);
-        log.setLevel(Level.FINE);
+        ch.setLevel(Level.INFO);
+        log.setLevel(Level.INFO);
         log.addHandler(ch);
         boolean server = false;
         if (args.length >= 2 && args[0].endsWith("server")) {
