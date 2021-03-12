@@ -57,6 +57,7 @@ import org.bff.javampd.song.SongDatabase;
     @Property(name = "currentSong", type = Song.class),
     @Property(name = "foundSongs", type = Song.class, array = true),
     @Property(name = "playlist", type = Song.class, array = true),
+    @Property(name = "searchingInProgress", type = boolean.class),
 })
 final class DataModel {
     enum Tab {
@@ -69,6 +70,7 @@ final class DataModel {
     private ConnectedToMpd connection;
     private PlatformServices services;
     private final Executor exec = Executors.newSingleThreadExecutor();
+    private volatile int currentSearch = 0;
     private final RefreshOnBackground updates = new RefreshOnBackground();
 
     @ModelOperation
@@ -228,8 +230,14 @@ final class DataModel {
     @OnPropertyChange("message")
     void search(Data model) {
         final String msg = model.getMessage();
+        final int mySearch = ++currentSearch;
+        model.setSearchingInProgress(true);
+        model.getFoundSongs().clear();
         withMpd(model, (d) -> {
             Runnable r = () -> {
+                if (mySearch < currentSearch) {
+                    return;
+                }
                 final SongDatabase db = d.getMusicDatabase().getSongDatabase();
                 final List<MPDSong> result = new ArrayList<>();
                 result.addAll(db.searchAny(msg));
@@ -245,17 +253,23 @@ final class DataModel {
                     }
                 }
                 Collections.shuffle(result);
-                model.applySongs(result);
+                model.applySongs(result, mySearch);
             };
             exec.execute(r);
         });
     }
 
     @ModelOperation
-    void applySongs(Data model, Collection<MPDSong> songs) {
+    void applySongs(Data model, Collection<MPDSong> songs, int mySearch) {
+        if (mySearch < currentSearch) {
+            return;
+        }
+
         List<Song> arr = convertSongs(songs, model.getCurrentSong(), 100);
-        model.getFoundSongs().clear();
         model.getFoundSongs().addAll(arr);
+        if (mySearch == currentSearch) {
+            model.setSearchingInProgress(false);
+        }
     }
 
     private static List<Song> convertSongs(final Collection<MPDSong> result, Song current, int maxItems) {
@@ -336,7 +350,7 @@ final class DataModel {
             
             if (error != null) {
                 model.setConnectionError(error);
-                model.setTab(Tab.SETTINGS);
+                model.changeTab(Tab.SETTINGS);
                 throw new MPDConnectionException(error);
             }
 
@@ -346,6 +360,11 @@ final class DataModel {
             updates.schedule(tmpListener, 1000);
         }
         return connection.mpd;
+    }
+
+    @ModelOperation
+    void changeTab(Data model, Tab tab) {
+        model.setTab(tab);
     }
 
 
