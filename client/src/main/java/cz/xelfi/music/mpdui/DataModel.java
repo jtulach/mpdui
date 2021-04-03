@@ -145,6 +145,23 @@ final class DataModel {
         return tab == Tab.SETTINGS;
     }
 
+    @ComputedProperty(write = "setPosition")
+    static int position(int elapsed) {
+        return elapsed;
+    }
+
+    static void setPosition(Data model, int seekTo) {
+        model.seekPosition(seekTo);
+    }
+
+    @ModelOperation
+    void seekPosition(Data model, int seekTo) {
+        withMpd(model, (mpd) -> {
+            mpd.getPlayer().seekSong(null, seekTo);
+            updateStatus(model);
+        });
+    }
+
     @ComputedProperty
     static String elapsedMinSec(int elapsed) {
         int min = elapsed / 60;
@@ -176,7 +193,7 @@ final class DataModel {
         model.setMessageSelected(true);
         model.updateStatus();
     }
-    
+
     @Function
     static void doMain(Data model) {
         model.setTab(Tab.MAIN);
@@ -347,7 +364,7 @@ final class DataModel {
                 tmpListener = null;
                 error = ex.getMessage();
             }
-            
+
             if (error != null) {
                 model.setConnectionError(error);
                 model.changeTab(Tab.SETTINGS);

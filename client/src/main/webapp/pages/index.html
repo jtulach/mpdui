@@ -82,7 +82,7 @@
                         <label for="at" data-bind="text: $root.elapsedMinSec">0:00</label>
                     </div>
                     <div class="input-field col s12">
-                        <input disabled data-bind="value: $root.elapsed, attr: { max : $root.total }" type="range" id="at" min="0" max="100"/>
+                        <input data-bind="value: $root.position, attr: { max : $root.total }" type="range" id="at" min="0" max="100"/>
                     </div>
                     <div class="input-field col s12" data-bind="with: fullAlbum">
                         <input disabled data-bind="textInput: $data" placeholder="Placeholder" id="album" type="text" class="validate">
