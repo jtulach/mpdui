@@ -164,6 +164,15 @@ final class DataModel {
 
     @ComputedProperty
     static String elapsedMinSec(int elapsed) {
+        return toMinSec(elapsed);
+    }
+
+    @ComputedProperty
+    static String totalMinSec(int total) {
+        return toMinSec(total);
+    }
+
+    private static String toMinSec(int elapsed) {
         int min = elapsed / 60;
         int sec = elapsed % 60;
         String secStr = "00" + sec;
