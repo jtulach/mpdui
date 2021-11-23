@@ -105,8 +105,15 @@
                     </a>
                     <span class="title" data-bind="text: fullTitle"></span>
                     <p>
-                        <span data-bind="with: fullArtist"><a href="#" data-bind="click: $root.doSearchText"><span data-bind="text: $data"></span></a></span><br>
-                        <span data-bind="with: fullAlbum"><a href="#" data-bind="click: $root.doSearchText"><span data-bind="text: $data"></span></a></span>
+                        <a href="#" data-bind="click: $root.addArtist"><span data-bind="text: fullArtist"></span></a>
+                        <span data-bind="with: fullArtist">
+                            <a href="#" data-bind="click: $root.doSearchText"><span>...</span></a>
+                        </span>
+                        <br>
+                        <a href="#" data-bind="click: $root.addAlbum"><span data-bind="text: fullAlbum"></span></a>
+                        <span data-bind="with: fullAlbum">
+                            <a href="#" data-bind="click: $root.doSearchText"><span>...</span></a>
+                        </span>
                     </p>
                     <a data-bind="visible: important" href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
                 </li>

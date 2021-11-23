@@ -42,6 +42,7 @@ import org.bff.javampd.server.MPD;
 import org.bff.javampd.server.MPDConnectionException;
 import org.bff.javampd.song.MPDSong;
 import org.bff.javampd.song.SongDatabase;
+import org.bff.javampd.song.SongSearcher;
 
 @Model(className = "Data", targetId = "", instance = true, builder = "put", properties = {
     @Property(name = "message", type = String.class),
@@ -106,6 +107,28 @@ final class DataModel {
         withMpd(model, (server) -> {
             model.getFoundSongs().remove(data);
             server.getPlaylist().addSong(data.getFile());
+            model.updateStatus();
+        });
+    }
+
+    @Function
+    void addAlbum(Data model, Song data) {
+        withMpd(model, (server) -> {
+            for (MPDSong s : server.getSongSearcher().find(SongSearcher.ScopeType.ALBUM, data.getAlbumName())) {
+                server.getPlaylist().addSong(s);
+            }
+            model.getFoundSongs().remove(data);
+            model.updateStatus();
+        });
+    }
+
+    @Function
+    void addArtist(Data model, Song data) {
+        withMpd(model, (server) -> {
+            for (MPDSong s : server.getSongSearcher().find(SongSearcher.ScopeType.ARTIST, data.getArtistName())) {
+                server.getPlaylist().addSong(s);
+            }
+            model.getFoundSongs().remove(data);
             model.updateStatus();
         });
     }
