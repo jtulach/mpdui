@@ -146,7 +146,14 @@
                         <span data-bind="with: fullArtist"><a href="#" data-bind="click: $root.doSearchText"><span data-bind="text: $data"></span></a></span><br>
                         <span data-bind="with: fullAlbum"><a href="#" data-bind="click: $root.doSearchText"><span data-bind="text: $data"></span></a></span>
                     </p>
-                    <a data-bind="visible: important" href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
+                    <!-- ko if: important -->
+                    <span data-bind="visible: important" class="secondary-content"><i class="material-icons">grade</i></span>
+                    <!-- /ko -->
+                    <!-- ko ifnot: important -->
+                    <a href="#!" class="secondary-content" data-bind="click: $root.playSong">
+                        <i class="material-icons">play_arrow</i>
+                    </a>
+                    <!-- /ko -->
                 </li>
             </ul>
         </div>

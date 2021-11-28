@@ -143,6 +143,16 @@ final class DataModel {
         });
     }
 
+    @Function
+    void playSong(Data model, Song data) {
+        withMpd(model, (server) -> {
+            data.withSong(s -> {
+                server.getPlayer().playSong(s);
+            });
+            model.updateStatus();
+        });
+    }
+
     @ComputedProperty
     static boolean searching(Tab tab) {
         return tab == Tab.SEARCHLINE;
