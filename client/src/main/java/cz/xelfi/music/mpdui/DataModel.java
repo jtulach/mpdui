@@ -217,7 +217,17 @@ final class DataModel {
     static void doSettings(Data model) {
         model.setTab(Tab.SETTINGS);
     }
+    
+    @ComputedProperty
+    static boolean hasSearch(String message) {
+      return message != null && message.length() > 0;
+    }
 
+    @Function
+    static void doClear(Data model) {
+      model.setMessage("");
+    }
+    
     @Function
     static void doSearch(Data model) {
         if (model.getTab() == Tab.SEARCHLINE) {
