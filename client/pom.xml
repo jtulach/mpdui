@@ -22,7 +22,6 @@
     <exec.java.bin>${java.home}/bin/java</exec.java.bin>
     <exec.debug.arg>-Ddebug=false</exec.debug.arg>
     <exec.server.arg>-Ddebug=false</exec.server.arg>
-    <exec.springloaded>-javaagent:${project.build.directory}/springloaded.jar</exec.springloaded>
   </properties>
   <build>
       <plugins>
@@ -81,8 +80,6 @@
                    <arguments>
                        <argument>-classpath</argument>
                        <classpath/>
-                       <argument>${exec.springloaded}</argument>
-                       <argument>-Xverify:none</argument>
                        <argument>-Dbrowser.rootdir=${basedir}/src/main/webapp/</argument>
                        <argument>-Dnetbeans.inspect.port=${netbeans.inspect.port}</argument>
                        <argument>${exec.debug.arg}</argument>
@@ -91,33 +88,6 @@
                        <argument>6681</argument>
                    </arguments>
                 </configuration>
-          </plugin>
-          <plugin>
-              <groupId>org.apache.maven.plugins</groupId>
-              <artifactId>maven-dependency-plugin</artifactId>
-              <version>2.10</version>
-              <executions>
-                  <execution>
-                      <id>copy</id>
-                      <phase>process-classes</phase>
-                      <goals>
-                          <goal>copy</goal>
-                      </goals>
-                      <configuration>
-                          <artifactItems>
-                              <artifactItem>
-                                  <groupId>org.springframework</groupId>
-                                  <artifactId>springloaded</artifactId>
-                                  <version>1.2.3.RELEASE</version>
-                                  <type>jar</type>
-                                  <overWrite>false</overWrite>
-                                  <destFileName>springloaded.jar</destFileName>
-                              </artifactItem>
-                          </artifactItems>
-                          <outputDirectory>${project.build.directory}</outputDirectory>
-                      </configuration>
-                  </execution>
-              </executions>
           </plugin>
           <plugin>
               <artifactId>maven-assembly-plugin</artifactId>
@@ -376,15 +346,6 @@
                   </plugin>
               </plugins>
           </build>
-      </profile>
-      <profile>
-          <id>jdk11</id>
-          <activation>
-              <jdk>11</jdk>
-          </activation>
-          <properties>
-              <exec.springloaded>-Djavaagent=none</exec.springloaded>
-          </properties>
       </profile>
   </profiles>
 </project>
