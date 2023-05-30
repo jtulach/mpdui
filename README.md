@@ -1,6 +1,6 @@
 ## UI for Music Player Daemon
 
-[![Build Status](https://travis-ci.org/jtulach/mpdui.svg?branch=master)](https://travis-ci.org/jtulach/mpdui)
+[![Build Status](https://github.com/jtulach/mpdui/actions/workflows/maven.yml/badge.svg)](https://github.com/jtulach/mpdui/actions/workflows/maven.yml)
 
 I am in a desperate need to control my [MPD](https://www.musicpd.org) server
 from iPad and iPhone. This project is my attempt to write such UI. When at it,
