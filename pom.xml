@@ -11,7 +11,6 @@
   <name>mpdui</name>
     <modules>
         <module>javampd</module>
-        <module>html4j</module>
         <module>client</module>
         <!--
         <module>client-web</module>
@@ -19,8 +18,8 @@
         <module>js</module>
     </modules>
     <properties>
-        <net.java.html.version>1.7.1</net.java.html.version>
-        <bck2brwsr.version>0.31</bck2brwsr.version>
+        <net.java.html.version>1.8.1</net.java.html.version>
+        <bck2brwsr.version>0.54</bck2brwsr.version>
         <bck2brwsr.obfuscationlevel>MINIMAL</bck2brwsr.obfuscationlevel>
         <junit.browser.version>1.0</junit.browser.version>
         <jersey.version>2.13</jersey.version>
