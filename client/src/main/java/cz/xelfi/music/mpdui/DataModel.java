@@ -219,8 +219,8 @@ final class DataModel {
     }
     
     @ComputedProperty
-    static boolean hasSearch(String message) {
-      return message != null && message.length() > 0;
+    static boolean hasSearch(Tab tab, String message) {
+      return tab == Tab.SEARCHLINE && message != null && message.length() > 0;
     }
 
     @Function
