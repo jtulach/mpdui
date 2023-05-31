@@ -62,15 +62,17 @@ public class PlatformServices {
         setLocationImpl(attr, value);
     }
 
-    @JavaScriptBody(args = { "key" }, body =
-        "if (!window.localStorage) return null;\n" +
-        "return window.localStorage.getItem(key);\n"
+    @JavaScriptBody(args = { "key" }, body = """
+        if (!window.localStorage) return null;
+        return window.localStorage.getItem(key);
+        """
     )
     private static native String getPreferencesImpl(String key);
 
-    @JavaScriptBody(args = { "key", "value" }, body =
-        "if (!window.localStorage) return;\n" +
-        "window.localStorage.setItem(key, value);\n"
+    @JavaScriptBody(args = { "key", "value" }, body = """
+        if (!window.localStorage) return;
+        window.localStorage.setItem(key, value);
+        """
     )
     private static native void setPreferencesImpl(String key, String value);
 
@@ -83,34 +85,38 @@ public class PlatformServices {
     @JavaScriptBody(
             args = {"msg", "callback"},
             javacall = true,
-            body = "if (confirm(msg)) {\n"
-            + "  callback.@java.lang.Runnable::run()();\n"
-            + "}\n"
+            body = """
+            if (confirm(msg)) {
+                callback.@java.lang.Runnable::run()();
+            }
+            """
     )
     static native void confirmImpl(String msg, Runnable callback);
 
-    @JavaScriptBody(
-            args = {}, body
-            = "var w = window,\n"
-            + "    d = document,\n"
-            + "    e = d.documentElement,\n"
-            + "    g = d.getElementsByTagName('body')[0],\n"
-            + "    x = w.innerWidth || e.clientWidth || g.clientWidth,\n"
-            + "    y = w.innerHeight|| e.clientHeight|| g.clientHeight;\n"
-            + "\n"
-            + "return [x, y];\n"
+    @JavaScriptBody(args = {}, body = """
+        var w = window,
+            d = document,
+            e = d.documentElement,
+            g = d.getElementsByTagName('body')[0],
+            x = w.innerWidth || e.clientWidth || g.clientWidth,
+            y = w.innerHeight|| e.clientHeight|| g.clientHeight;
+
+        return [x, y];
+        """
     )
     static native Object[] screenSizeImpl();
 
-    @JavaScriptBody(args = { "attr" }, body
-            = "var w = window || document;\n"
-            + "return w.location[attr];\n"
+    @JavaScriptBody(args = { "attr" }, body = """
+        var w = window || document;
+        return w.location[attr];
+        """
     )
     static native String getLocationImpl(String attr);
 
-    @JavaScriptBody(args = { "attr", "value" }, body
-            = "var w = window || document;\n"
-            + "w.location[attr] = value;\n"
+    @JavaScriptBody(args = { "attr", "value" }, body = """
+        var w = window || document;
+        w.location[attr] = value;
+        """
     )
     static native void setLocationImpl(String attr, String value);
 
