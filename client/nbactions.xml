@@ -32,6 +32,20 @@
         </activatedProfiles>
     </action>
     <action>
+        <actionName>run.single.main</actionName>
+        <goals>
+            <goal>process-classes</goal>
+            <goal>exec:exec</goal>
+        </goals>
+        <properties>
+            <skipTests>true</skipTests>
+            <exec.mainClass>${packageClassName}</exec.mainClass>
+        </properties>
+        <activatedProfiles>
+            <activatedProfile>browser-presenter</activatedProfile>
+        </activatedProfiles>
+    </action>
+    <action>
         <actionName>debug</actionName>
         <goals>
             <goal>process-classes</goal>
@@ -41,6 +55,22 @@
             <skipTests>true</skipTests>
             <jpda.listen>true</jpda.listen>
             <exec.debug.arg>-Xrunjdwp:transport=dt_socket,server=n,address=${jpda.address}</exec.debug.arg>
+        </properties>
+        <activatedProfiles>
+            <activatedProfile>browser-presenter</activatedProfile>
+        </activatedProfiles>
+    </action>
+    <action>
+        <actionName>debug.single.main</actionName>
+        <goals>
+            <goal>process-classes</goal>
+            <goal>exec:exec</goal>
+        </goals>
+        <properties>
+            <skipTests>true</skipTests>
+            <jpda.listen>true</jpda.listen>
+            <exec.debug.arg>-Xrunjdwp:transport=dt_socket,server=n,address=${jpda.address}</exec.debug.arg>
+            <exec.mainClass>${packageClassName}</exec.mainClass>
         </properties>
         <activatedProfiles>
             <activatedProfile>browser-presenter</activatedProfile>
