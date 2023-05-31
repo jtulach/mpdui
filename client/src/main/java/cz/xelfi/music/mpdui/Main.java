@@ -40,17 +40,24 @@ public final class Main {
             System.setProperty("com.dukescript.presenters.browser", "NONE");
             System.setProperty("com.dukescript.presenters.browserDebug", "true");
         }
+
+        long then = System.currentTimeMillis();
         BrowserBuilder.newBrowser().
             loadPage("pages/index.html").
             loadClass(Main.class).
             invoke("onPageLoad").
             showAndWait();
-        
-        if (server) {
-            while (true) {
-                Thread.sleep(100);
-            }
+
+
+        long took = System.currentTimeMillis() - then;
+
+        if (took < 1000 * 10) {
+            System.err.println("Presss Enter to terminate the server...");
+            System.in.read();
+        } else {
+            System.err.println("Terminating the server...");
         }
+        System.exit(0);
     }
 
     /**
