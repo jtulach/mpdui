@@ -50,6 +50,8 @@ import org.bff.javampd.song.SongSearcher;
     @Property(name = "connectionError", type = String.class),
     @Property(name = "tab", type = DataModel.Tab.class),
     @Property(name = "volume", type = int.class),
+    @Property(name = "repeat", type = boolean.class),
+    @Property(name = "random", type = boolean.class),
     @Property(name = "elapsed", type = int.class),
     @Property(name = "total", type = int.class),
     @Property(name = "playing", type = boolean.class),
@@ -80,6 +82,8 @@ final class DataModel {
             final Player player = server.getPlayer();
             MPDSong s = player.getCurrentSong();
             model.setVolume(player.getVolume());
+            model.setRepeat(player.isRepeat());
+            model.setRandom(player.isRandom());
             model.setElapsed((int) player.getElapsedTime());
             model.setTotal((int) player.getTotalTime());
             model.setPlaying(player.getStatus() == Player.Status.STATUS_PLAYING);
@@ -273,25 +277,26 @@ final class DataModel {
         }
     }
 
-    @OnPropertyChange("volume")
-    void volumeChange(Data model) {
-        volumeChange(model, model.getVolume());
+    @OnPropertyChange({"volume", "random", "repeat"})
+    void settingsChanged(Data model) {
+        volumeRandomRepeatChange(model, model.getVolume(), model.isRandom(), model.isRepeat());
     }
 
-    private void volumeChange(Data model, int value) {
+    private void volumeRandomRepeatChange(Data model, int value, boolean random, boolean repeat) {
         withMpd(model, (server) -> {
             final Player player = server.getPlayer();
-            if (player.getVolume() == value) {
-                return;
+            if (player.getVolume() != value) {
+                final VolumeChangeListener onVolumeChange = new VolumeChangeListener() {
+                    @Override
+                    public void volumeChanged(VolumeChangeEvent event) {
+                        player.removeVolumeChangedListener(this);
+                        model.setVolume(event.getVolume());
+                    }
+                };
+                player.addVolumeChangeListener(onVolumeChange);
             }
-            final VolumeChangeListener onVolumeChange = new VolumeChangeListener() {
-                @Override
-                public void volumeChanged(VolumeChangeEvent event) {
-                    player.removeVolumeChangedListener(this);
-                    model.setVolume(event.getVolume());
-                }
-            };
-            player.addVolumeChangeListener(onVolumeChange);
+            player.setRandom(random);
+            player.setRepeat(repeat);
             player.setVolume(value);
         });
     }
