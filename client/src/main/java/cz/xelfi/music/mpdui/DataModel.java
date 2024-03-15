@@ -262,12 +262,12 @@ final class DataModel {
 
     @Function
     void volumeUp(Data model) {
-        volumeChange(model, Math.min(100, model.getVolume() + 10));
+        volumeRandomRepeatChange(model, Math.min(100, model.getVolume() + 10), null, null);
     }
 
     @Function
     void volumeDown(Data model) {
-        volumeChange(model, Math.max(0, model.getVolume() - 10));
+        volumeRandomRepeatChange(model, Math.max(0, model.getVolume() - 10), null, null);
     }
 
     @OnPropertyChange("tab")
@@ -282,7 +282,7 @@ final class DataModel {
         volumeRandomRepeatChange(model, model.getVolume(), model.isRandom(), model.isRepeat());
     }
 
-    private void volumeRandomRepeatChange(Data model, int value, boolean random, boolean repeat) {
+    private void volumeRandomRepeatChange(Data model, int value, Boolean random, Boolean repeat) {
         withMpd(model, (server) -> {
             final Player player = server.getPlayer();
             if (player.getVolume() != value) {
@@ -295,8 +295,12 @@ final class DataModel {
                 };
                 player.addVolumeChangeListener(onVolumeChange);
             }
-            player.setRandom(random);
-            player.setRepeat(repeat);
+            if (random != null) {
+                player.setRandom(random);
+            }
+            if (repeat != null) {
+                player.setRepeat(repeat);
+            }
             player.setVolume(value);
         });
     }
