@@ -1,0 +1,257 @@
+[
+{
+  "name":"[Lorg.glassfish.grizzly.Buffer;"
+},
+{
+  "name":"[Lorg.glassfish.grizzly.ConnectionProbe;"
+},
+{
+  "name":"[Lorg.glassfish.grizzly.IOEventLifeCycleListener;"
+},
+{
+  "name":"[Lorg.glassfish.grizzly.TransportProbe;"
+},
+{
+  "name":"[Lorg.glassfish.grizzly.http.HttpProbe;"
+},
+{
+  "name":"[Lorg.glassfish.grizzly.http.TransferEncoding;"
+},
+{
+  "name":"[Lorg.glassfish.grizzly.http.server.HttpServerProbe;"
+},
+{
+  "name":"[Lorg.glassfish.grizzly.http.server.filecache.FileCacheProbe;"
+},
+{
+  "name":"[Lorg.glassfish.grizzly.memory.MemoryProbe;"
+},
+{
+  "name":"[Lorg.glassfish.grizzly.threadpool.ThreadPoolProbe;"
+},
+{
+  "name":"com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.sun.org.apache.xerces.internal.jaxp.DocumentBuilderFactoryImpl",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"java.lang.ClassValue"
+},
+{
+  "name":"java.lang.Thread",
+  "fields":[{"name":"threadLocalRandomProbe"}]
+},
+{
+  "name":"java.lang.ref.WeakReference"
+},
+{
+  "name":"java.security.SecureRandomParameters"
+},
+{
+  "name":"java.util.concurrent.atomic.AtomicBoolean",
+  "fields":[{"name":"value"}]
+},
+{
+  "name":"java.util.concurrent.atomic.AtomicReference",
+  "fields":[{"name":"value"}]
+},
+{
+  "name":"java.util.concurrent.atomic.Striped64",
+  "fields":[{"name":"base"}, {"name":"cellsBusy"}]
+},
+{
+  "name":"org.bff.javampd.MPDSystemClock",
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"org.bff.javampd.admin.AdminProperties",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"org.bff.javampd.admin.MPDAdmin",
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":["org.bff.javampd.admin.AdminProperties","org.bff.javampd.statistics.ServerStatistics","org.bff.javampd.command.CommandExecutor"] }]
+},
+{
+  "name":"org.bff.javampd.album.MPDAlbumConverter",
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"org.bff.javampd.album.MPDAlbumDatabase",
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":["org.bff.javampd.database.TagLister","org.bff.javampd.album.AlbumConverter"] }]
+},
+{
+  "name":"org.bff.javampd.art.MPDArtworkFinder",
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":["org.bff.javampd.song.SongDatabase"] }]
+},
+{
+  "name":"org.bff.javampd.artist.MPDArtistDatabase",
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":["org.bff.javampd.database.TagLister"] }]
+},
+{
+  "name":"org.bff.javampd.command.MPDCommandExecutor",
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"org.bff.javampd.database.DatabaseProperties",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"org.bff.javampd.database.MPDMusicDatabase",
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":["org.bff.javampd.artist.ArtistDatabase","org.bff.javampd.album.AlbumDatabase","org.bff.javampd.genre.GenreDatabase","org.bff.javampd.playlist.PlaylistDatabase","org.bff.javampd.file.FileDatabase","org.bff.javampd.year.DateDatabase","org.bff.javampd.song.SongDatabase"] }]
+},
+{
+  "name":"org.bff.javampd.database.MPDTagLister",
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":["org.bff.javampd.database.DatabaseProperties","org.bff.javampd.command.CommandExecutor"] }]
+},
+{
+  "name":"org.bff.javampd.file.MPDFileDatabase",
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":["org.bff.javampd.database.DatabaseProperties","org.bff.javampd.command.CommandExecutor"] }]
+},
+{
+  "name":"org.bff.javampd.genre.MPDGenreDatabase",
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":["org.bff.javampd.database.TagLister"] }]
+},
+{
+  "name":"org.bff.javampd.monitor.MPDConnectionMonitor",
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"org.bff.javampd.monitor.MPDErrorMonitor",
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"org.bff.javampd.monitor.MPDOutputMonitor",
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":["org.bff.javampd.admin.Admin"] }]
+},
+{
+  "name":"org.bff.javampd.monitor.MPDPlayerMonitor",
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"org.bff.javampd.monitor.MPDPlaylistMonitor",
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":["org.bff.javampd.monitor.PlayerMonitor"] }]
+},
+{
+  "name":"org.bff.javampd.monitor.MPDStandAloneMonitor",
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":["org.bff.javampd.server.ServerStatus","org.bff.javampd.monitor.OutputMonitor","org.bff.javampd.monitor.TrackMonitor","org.bff.javampd.monitor.ConnectionMonitor","org.bff.javampd.monitor.PlayerMonitor","org.bff.javampd.monitor.PlaylistMonitor","org.bff.javampd.monitor.ErrorMonitor"] }]
+},
+{
+  "name":"org.bff.javampd.monitor.MPDTrackMonitor",
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"org.bff.javampd.player.MPDPlayer",
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":["org.bff.javampd.server.ServerStatus","org.bff.javampd.player.PlayerProperties","org.bff.javampd.command.CommandExecutor","org.bff.javampd.song.SongConverter"] }]
+},
+{
+  "name":"org.bff.javampd.player.PlayerProperties",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"org.bff.javampd.playlist.MPDPlaylist",
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":["org.bff.javampd.song.SongDatabase","org.bff.javampd.server.ServerStatus","org.bff.javampd.playlist.PlaylistProperties","org.bff.javampd.command.CommandExecutor","org.bff.javampd.song.SongConverter"] }]
+},
+{
+  "name":"org.bff.javampd.playlist.MPDPlaylistDatabase",
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":["org.bff.javampd.song.SongDatabase","org.bff.javampd.command.CommandExecutor","org.bff.javampd.database.DatabaseProperties","org.bff.javampd.database.TagLister","org.bff.javampd.song.SongConverter"] }]
+},
+{
+  "name":"org.bff.javampd.playlist.PlaylistProperties",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"org.bff.javampd.server.MPDServerStatus",
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":["org.bff.javampd.server.ServerProperties","org.bff.javampd.command.CommandExecutor","org.bff.javampd.Clock"] }]
+},
+{
+  "name":"org.bff.javampd.server.ServerProperties",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"org.bff.javampd.song.MPDSongConverter",
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"org.bff.javampd.song.MPDSongDatabase",
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":["org.bff.javampd.song.SongSearcher"] }]
+},
+{
+  "name":"org.bff.javampd.song.MPDSongSearcher",
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":["org.bff.javampd.song.SearchProperties","org.bff.javampd.command.CommandExecutor","org.bff.javampd.song.SongConverter"] }]
+},
+{
+  "name":"org.bff.javampd.song.SearchProperties",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"org.bff.javampd.statistics.MPDServerStatistics",
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":["org.bff.javampd.server.ServerProperties","org.bff.javampd.command.CommandExecutor","org.bff.javampd.Clock"] }]
+},
+{
+  "name":"org.bff.javampd.year.MPDDateDatabase",
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":["org.bff.javampd.database.TagLister"] }]
+},
+{
+  "name":"org.glassfish.grizzly.asyncqueue.TaskQueue",
+  "fields":[{"name":"currentElement"}, {"name":"spaceInBytes"}, {"name":"writeHandlersCounter"}]
+},
+{
+  "name":"org.glassfish.grizzly.nio.NIOConnection",
+  "fields":[{"name":"closeReason"}, {"name":"connectCloseSemaphore"}]
+},
+{
+  "name":"org.glassfish.grizzly.utils.IdleTimeoutFilter$IdleRecord",
+  "fields":[{"name":"counter"}, {"name":"timeoutMillis"}]
+},
+{
+  "name":"org.netbeans.html.json.impl.ClassValueTypes",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"org.netbeans.html.json.spi.PropertyBinding",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"org.netbeans.html.ko4j.$JsCallbacks$",
+  "queryAllPublicMethods":true,
+  "methods":[{"name":"raw$org_netbeans_html_ko4j_Knockout$call$ILjava_lang_Object_2Ljava_lang_Object_2","parameterTypes":["java.lang.Object","int","java.lang.Object","java.lang.Object"] }, {"name":"raw$org_netbeans_html_ko4j_Knockout$setValue$ILjava_lang_Object_2","parameterTypes":["java.lang.Object","int","java.lang.Object"] }]
+},
+{
+  "name":"sun.security.provider.NativePRNG",
+  "methods":[{"name":"<init>","parameterTypes":[] }, {"name":"<init>","parameterTypes":["java.security.SecureRandomParameters"] }]
+},
+{
+  "name":"sun.security.provider.SHA",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+}
+]

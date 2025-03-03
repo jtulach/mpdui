@@ -20,21 +20,6 @@ mpdui$ export JAVA_HOME=/jdk1.8.0/
 mpdui$ mvn clean install -DskipTests
 ```
 
-#### Building for iOS
-
-As one needs [PR-61](https://github.com/finnyb/javampd/pull/61) which
-hasn't been accepted yet, there is a Git submodule with 
-custom version of `javampd` library for RoboVM (the JVM for iOS).
-Build the project as described above and then:
-
-```bash
-mpdui$ mvn -f client-ios/ robovm:iphone-sim
-mpdui$ mvn -f client-ios/ robovm:ios-device
-```
-
-Deploying such application to iPad device is possible, but it works just
-a few days. As such I decided to try another approach...
-
 #### Running as a server
 
 Let's run the application on a server and display the UI in any browser.
@@ -51,3 +36,18 @@ The server starts listening on [local port 6681](http://localhost:6681). The sam
 can be done from NetBeans IDE:
 
 ![Run as a Server](docs/mpdui+nb.png)
+
+#### Building for iOS
+
+As one needs [PR-61](https://github.com/finnyb/javampd/pull/61) which
+hasn't been accepted yet, there is a Git submodule with
+custom version of `javampd` library for RoboVM (the JVM for iOS).
+Build the project as described above and then:
+
+```bash
+mpdui$ mvn -f client-ios/ robovm:iphone-sim
+mpdui$ mvn -f client-ios/ robovm:ios-device
+```
+
+Deploying such application to iPad device is possible, but it works just
+a few days. As such I decided to try another approach...

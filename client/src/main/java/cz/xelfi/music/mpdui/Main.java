@@ -39,13 +39,15 @@ public final class Main {
             System.setProperty("com.dukescript.presenters.browserPort", args[1]);
             System.setProperty("com.dukescript.presenters.browser", "NONE");
             System.setProperty("com.dukescript.presenters.browserDebug", "true");
+            if (args.length >= 3) {
+                System.setProperty("browser.rootdir", args[2]);
+            }
         }
 
         long then = System.currentTimeMillis();
         BrowserBuilder.newBrowser().
             loadPage("pages/index.html").
-            loadClass(Main.class).
-            invoke("onPageLoad").
+            loadFinished(Main::onPageLoad).
             showAndWait();
 
 
@@ -67,7 +69,7 @@ public final class Main {
         DataModel.onPageLoad(services);
     }
 
-    public static void onPageLoad() throws Exception {
+    public static void onPageLoad() {
         // don't put "common" initialization stuff here, other platforms (iOS, Android, Bck2Brwsr) may not call this method. They rather call DataModel.onPageLoad
         DataModel.onPageLoad(new DesktopServices());
     }

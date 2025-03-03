@@ -22,6 +22,7 @@
     <exec.java.bin>${java.home}/bin/java</exec.java.bin>
     <exec.debug.arg>-Ddebug=false</exec.debug.arg>
     <exec.server.arg>-Ddebug=false</exec.server.arg>
+    <native.maven.plugin.version>0.10.5</native.maven.plugin.version>
   </properties>
   <build>
       <plugins>
@@ -190,6 +191,12 @@
         <type>jar</type>
     </dependency>
     < ! - - End of Bck2Brwsr VM presenter for BrowserRunner -->
+    <dependency>
+      <groupId>org.glassfish.grizzly</groupId>
+      <artifactId>grizzly-http-server</artifactId>
+      <version>4.0.2</version>
+      <scope>runtime</scope>
+    </dependency>
   </dependencies>
   <profiles>
       <profile>
@@ -335,5 +342,30 @@
               </plugins>
           </build>
       </profile>
+  <profile>
+    <id>native</id>
+    <build>
+      <plugins>
+        <plugin>
+          <groupId>org.graalvm.buildtools</groupId>
+          <artifactId>native-maven-plugin</artifactId>
+          <version>${native.maven.plugin.version}</version>
+          <extensions>true</extensions>
+          <executions>
+            <execution>
+              <id>build-native</id>
+              <goals>
+                <goal>compile-no-fork</goal>
+              </goals>
+              <phase>package</phase>
+            </execution>
+          </executions>
+          <configuration>
+            <mainClass>${project.mainclass}</mainClass>
+          </configuration>
+        </plugin>
+      </plugins>
+    </build>
+  </profile>
   </profiles>
 </project>
