@@ -1,4 +1,4 @@
-name: MPD UI
+name: MPD UI Native
 
 on:
   push:
@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-20.04
     strategy:
       matrix:
-        java: [ '8', '11', '17', '21' ]
+        java: [ '21' ]
 
     steps:
     - name: Checkout repository with submodules
@@ -20,9 +20,9 @@ jobs:
       with:
         submodules: 'true'
     - name: Update submodules
-      uses: actions/setup-java@v2
+      uses: graalvm/setup-graalvm@v1
       with:
-        distribution: 'zulu'
+        distribution: 'graalvm'
         java-version: ${{ matrix.java }}
         cache: maven
     - name: Build with Maven
