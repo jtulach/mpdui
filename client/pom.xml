@@ -23,6 +23,7 @@
     <exec.debug.arg>-Ddebug=false</exec.debug.arg>
     <exec.server.arg>-Ddebug=false</exec.server.arg>
     <native.maven.plugin.version>0.10.5</native.maven.plugin.version>
+    <graalvm.version>24.0.0</graalvm.version>
     <grizzly.version>2.3.19</grizzly.version>
   </properties>
   <build>
@@ -197,6 +198,12 @@
       <artifactId>grizzly-http-server</artifactId>
       <version>${grizzly.version}</version>
       <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.graalvm.sdk</groupId>
+      <artifactId>nativeimage</artifactId>
+      <version>${graalvm.version}</version>
+      <scope>provided</scope>
     </dependency>
   </dependencies>
   <profiles>
