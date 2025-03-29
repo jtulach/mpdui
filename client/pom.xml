@@ -27,6 +27,15 @@
     <grizzly.version>2.3.19</grizzly.version>
   </properties>
   <build>
+      <resources>
+          <resource>
+              <directory>src/main/resources</directory>
+          </resource>
+          <resource>
+              <targetPath>cz/xelfi/music/mpdui</targetPath>
+              <directory>src/main/webapp</directory>
+          </resource>
+      </resources>
       <plugins>
           <plugin>
               <groupId>org.apache.felix</groupId>
@@ -74,7 +83,6 @@
                    <arguments>
                        <argument>-classpath</argument>
                        <classpath/>
-                       <argument>-Dbrowser.rootdir=${basedir}/src/main/webapp/</argument>
                        <argument>-Dnetbeans.inspect.port=${netbeans.inspect.port}</argument>
                        <argument>${exec.debug.arg}</argument>
                        <argument>${project.mainclass}</argument>

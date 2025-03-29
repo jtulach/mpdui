@@ -5,6 +5,8 @@
   }, {
     "pattern":"\\QMETA-INF/services/java.lang.System$LoggerFinder\\E"
   }, {
+    "pattern":"cz/xelfi/music/mpdui/pages/.*"
+  }, {
     "pattern":"\\QMETA-INF/services/java.net.spi.InetAddressResolverProvider\\E"
   }, {
     "pattern":"\\QMETA-INF/services/java.nio.channels.spi.SelectorProvider\\E"

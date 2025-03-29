@@ -39,9 +39,6 @@ public final class Main {
             System.setProperty("com.dukescript.presenters.browserPort", args[1]);
             System.setProperty("com.dukescript.presenters.browser", "NONE");
             System.setProperty("com.dukescript.presenters.browserDebug", "true");
-            if (args.length >= 3) {
-                System.setProperty("browser.rootdir", args[2]);
-            }
         }
 
         long then = System.currentTimeMillis();
