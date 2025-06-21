@@ -26,7 +26,6 @@ jobs:
       with:
         distribution: 'graalvm'
         java-version: ${{ matrix.java }}
-        cache: maven
 
     - name: Build Native with Maven
       run: mvn -B "-Pnative,browser-presenter" package -DskipTests
