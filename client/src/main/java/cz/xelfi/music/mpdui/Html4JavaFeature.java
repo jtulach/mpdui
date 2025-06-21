@@ -16,6 +16,9 @@
  */
 package cz.xelfi.music.mpdui;
 
+import java.lang.reflect.Type;
+import java.util.HashSet;
+import java.util.Set;
 import org.graalvm.nativeimage.hosted.Feature;
 import org.graalvm.nativeimage.hosted.RuntimeReflection;
 
@@ -23,12 +26,24 @@ import org.graalvm.nativeimage.hosted.RuntimeReflection;
  * elements.
  */
 public final class Html4JavaFeature implements Feature {
+    private final Set<Type> alreadyProcessed = new HashSet<>();
+
     @Override
     public void duringSetup(DuringSetupAccess access) {
         access.registerObjectReplacer((obj) -> {
-            if (obj.getClass().getSimpleName().equals("$JsCallbacks$")) {
-                for (var m : obj.getClass().getMethods()) {
-                    RuntimeReflection.register(m);
+            if (obj instanceof Type type) {
+                var str = type.toString();
+                if (str.startsWith("class ")) {
+                    var typeName = str.substring(6);
+                    if (typeName.endsWith("$JsCallbacks$") && alreadyProcessed.add(type)) {
+                        var clazz = access.findClassByName(typeName);
+                        for (var m : clazz.getMethods()) {
+                            if (m.getDeclaringClass() == clazz) {
+                                RuntimeReflection.register(m);
+                            }
+                        }
+                        alreadyProcessed.add(type);
+                    }
                 }
             }
             return obj;
