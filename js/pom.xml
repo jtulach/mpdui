@@ -98,19 +98,6 @@
       <type>jar</type>
     </dependency>
 
-    <dependency>
-        <groupId>org.graalvm.js</groupId>
-        <artifactId>js</artifactId>
-        <version>21.3.0</version>
-        <scope>test</scope>
-    </dependency>
-    <dependency>
-        <groupId>org.graalvm.js</groupId>
-        <artifactId>js-scriptengine</artifactId>
-        <version>21.3.0</version>
-        <scope>test</scope>
-    </dependency>
-
     <!-- Bck2Brwsr VM presenter for BrowserRunner ...
     <dependency>
       <groupId>org.apidesign.bck2brwsr</groupId>
@@ -137,4 +124,52 @@
     </dependency>
     ... End of Bck2Brwsr VM presenter for BrowserRunner -->
   </dependencies>
+  <profiles>
+      <profile>
+          <id>graaljs8</id>
+          <activation>
+              <jdk>[1.8,21)</jdk>
+          </activation>
+          <properties>
+              <graaljs.version>21.3.0</graaljs.version>
+          </properties>
+          <dependencies>
+              <dependency>
+                  <groupId>org.graalvm.js</groupId>
+                  <artifactId>js</artifactId>
+                  <scope>test</scope>
+                  <version>${graaljs.version}</version>
+              </dependency>
+              <dependency>
+                  <groupId>org.graalvm.js</groupId>
+                  <artifactId>js-scriptengine</artifactId>
+                  <scope>test</scope>
+                  <version>${graaljs.version}</version>
+              </dependency>
+          </dependencies>
+      </profile>
+      <profile>
+          <id>graaljs21</id>
+          <activation>
+              <jdk>[21,]</jdk>
+          </activation>
+          <properties>
+              <graaljs.version>25.0.3</graaljs.version>
+          </properties>
+          <dependencies>
+              <dependency>
+                  <groupId>org.graalvm.js</groupId>
+                  <artifactId>js-language</artifactId>
+                  <scope>test</scope>
+                  <version>${graaljs.version}</version>
+              </dependency>
+              <dependency>
+                  <groupId>org.graalvm.js</groupId>
+                  <artifactId>js-scriptengine</artifactId>
+                  <scope>test</scope>
+                  <version>${graaljs.version}</version>
+              </dependency>
+          </dependencies>
+      </profile>
+  </profiles>
 </project>
